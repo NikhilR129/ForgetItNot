@@ -8,11 +8,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <include layout="@layout/tool_bar"
+            android:id="@+id/activity_main_toolbar" />
+        <!-- Nested Scroll View -->
         <android.support.v4.widget.NestedScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             >
         </android.support.v4.widget.NestedScrollView>
+
         <!-- BottomBar begins here -->
         <com.roughike.bottombar.BottomBar
             android:id="@+id/bottomBar"
@@ -23,7 +27,6 @@
         <!-- Bottom bar ends her -->
 
         <!--floating action menu Begins here-->
-
         <com.github.clans.fab.FloatingActionMenu
             android:id="@+id/material_design_android_floating_action_menu"
             android:layout_width="wrap_content"

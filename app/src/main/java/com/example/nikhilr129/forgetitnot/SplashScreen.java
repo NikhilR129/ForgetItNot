@@ -2,10 +2,10 @@ package com.example.nikhilr129.forgetitnot;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
-import android.os.Handler;
 
 import com.hanks.htextview.HTextView;
 import com.hanks.htextview.HTextViewType;
@@ -19,7 +19,6 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         makeFullScreen();
-
         setContentView(R.layout.splash_screen);
 
         //Thing done for animation
@@ -39,7 +38,7 @@ public class SplashScreen extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //Hide Action Bar
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
     }
 
     private void doTransitionToMainActivity() {
