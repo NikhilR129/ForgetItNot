@@ -37,4 +37,16 @@ dependencies {
     compile "com.hanks:htextview-base:$htextview_version"    // base library
     compile "com.hanks:htextview-line:$htextview_version"        // optional
     compile "com.android.support.constraint:constraint-layout:1.0.1"
+    compile 'com.airbnb.android:lottie:2.0.0-beta4'
+    compile 'com.github.paolorotolo:appintro:4.1.0'
+}
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion '25.3.0'
+            }
+        }
+    }
 }

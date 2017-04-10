@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setSubtitleTextColor(getResources().getColor(R.color.iconsTint));
     }
     private void createAndApplyActionOnFloatingActionMenu() {
-        materialDesignFAM = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
-        floatingActionButton1 = (FloatingActionButton) findViewById(R.id.material_design_floating_action_menu_item1);
+        materialDesignFAM = (FloatingActionMenu) findViewById(R.id.floating_action_menu);
+        floatingActionButton1 = (FloatingActionButton) findViewById(R.id.floating_action_menu_item1);
 
         floatingActionButton1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

@@ -3,8 +3,10 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    xmlns:htext="http://schemas.android.com/apk/res-auto">
+    xmlns:htext="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!-- TextView animation -->
     <com.hanks.htextview.HTextView
         android:id="@+id/text"
         android:layout_width="match_parent"
@@ -17,4 +19,18 @@
         htext:animateType="anvil"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <!-- GearBox animation -->
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
+        android:layout_below="@+id/text"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:lottie_fileName="gearanimation.json"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true" />
+
 </RelativeLayout>

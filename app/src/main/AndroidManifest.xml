@@ -8,6 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <!-- Splash screen -->
         <activity
             android:name=".SplashScreen"
@@ -24,6 +25,9 @@
             android:name=".MainActivity"
             android:label="@string/app_name" >
         </activity>
+
+        <!-- App Intro Activity -->
+        <activity android:name=".MainIntroActivity" />
     </application>
 
 </manifest>
