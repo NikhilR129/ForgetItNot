@@ -24,7 +24,7 @@ public class MainIntroActivity extends AppIntro {
     }
 
     private void initSlides() {
-        addSlide(SampleSlide.newInstance(R.layout.custom_intro_slide));
+        addSlide(SampleSlideForAppIntro.newInstance(R.layout.custom_intro_slide));
         addSlide(AppIntroFragment.newInstance("Create Automation\n Rules & Save Time", "Each Rule has "+
                 "3 Components:\nEvent, Condition and Action\n\nEvent(Triggered) -> Check Condition\nCondition(Satisfied) -> Execute Action", R.drawable.custom_slide_2, Color.parseColor("#673AB7")));
         setFlowAnimation();

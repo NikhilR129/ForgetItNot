@@ -20,6 +20,7 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //make app fullscreen
         makeFullScreen();
         setContentView(R.layout.splash_screen);
 
@@ -53,7 +54,7 @@ public class SplashScreen extends AppCompatActivity {
                 //  Create a new boolean and preference and set it to true
                 boolean isFirstStart = getPrefs.getBoolean("firstStart", true);
                 //  If the activity has never started before...
-                if (isFirstStart) {
+                //if (isFirstStart) {
                     //  Launch app intro
                     Intent i = new Intent(SplashScreen.this, MainIntroActivity.class);
                     startActivity(i);
@@ -65,11 +66,11 @@ public class SplashScreen extends AppCompatActivity {
 
                     //  Apply changes
                     e.apply();
-                }
-                else {
-                    startActivity(new Intent(SplashScreen.this, MainActivity.class));
-                    finish();
-                }
+              //  }
+//                else {
+//                    startActivity(new Intent(SplashScreen.this, MainActivity.class));
+//                    finish();
+//                }
             }
         }, SPLASH_TIME_OUT);
     }

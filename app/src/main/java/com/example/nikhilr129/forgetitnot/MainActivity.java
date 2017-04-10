@@ -1,5 +1,6 @@
 package com.example.nikhilr129.forgetitnot;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
@@ -18,10 +19,10 @@ import com.roughike.bottombar.OnTabSelectListener;
 public class MainActivity extends AppCompatActivity {
 
 
-    FloatingActionMenu materialDesignFAM;
-    FloatingActionButton floatingActionButton1;
-    BottomBar  bottomNavigationBar;
-    Toolbar toolbar;
+    private  FloatingActionMenu materialDesignFAM;
+    private  FloatingActionButton floatingActionButton1;
+    private  BottomBar  bottomNavigationBar;
+    private  Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         createAndApplyActionOnFloatingActionMenu();
 
         //create BottomBar and add Tab Click Listener
+        createBottomBarAndClickListener();
     }
 
     private void setToolbar() {
@@ -50,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //TODO something when floating action menu first item clicked
-
+                startActivity(new Intent(MainActivity.this, SelectEventConditionAction.class));
+                finish();
             }
         });
     }
@@ -59,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {
+
             }
         });
     }

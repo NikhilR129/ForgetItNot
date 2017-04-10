@@ -28,6 +28,8 @@
 
         <!-- App Intro Activity -->
         <activity android:name=".MainIntroActivity" />
+        <!-- Event Selection Activity -->
+        <activity android:name=".SelectEventConditionAction" />
     </application>
 
 </manifest>
