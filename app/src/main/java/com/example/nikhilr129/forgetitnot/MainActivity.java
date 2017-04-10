@@ -77,12 +77,25 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // action with ID action_refresh was selected
             case R.id.action_refresh:
-                Toast.makeText(this, "Refresh selected", Toast.LENGTH_SHORT)
-                        .show();
+                Intent i=new Intent(this,MainActivity.class);
+                startActivity(i);
+                this.finish();
                 break;
             // action with ID action_settings was selected
             case R.id.action_settings:
                 Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT)
+                        .show();
+                break;
+            case R.id.share:
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String shareBody = "Check out this awesome app.It automates most of the boring tasks in Android";
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "ForgetItNot");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(sharingIntent, "Share via"));
+                break;
+            case R.id.aboutUs:
+                Toast.makeText(this, "About Us selected", Toast.LENGTH_SHORT)
                         .show();
                 break;
             default:
