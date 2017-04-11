@@ -31,10 +31,18 @@ public  class TimePickerFragment extends DialogFragment
         return new TimePickerDialog(getActivity(), this, hour, minute,
                 DateFormat.is24HourFormat(getActivity()));
     }
-
+    public interface OnDataPass {
+        public void onDataPass(String data1,String data2);
+    }
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         // Do something with the time chosen by the user
-        Activity a=getActivity();
-        Bundle b=getArguments();
+        dataPasser.onDataPass(hourOfDay+"",minute+"");
+    }
+    OnDataPass dataPasser;
+
+    @Override
+    public void onAttach(Activity a) {
+        super.onAttach(a);
+        dataPasser = (OnDataPass) a;
     }
 }
