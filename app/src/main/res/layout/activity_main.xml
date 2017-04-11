@@ -26,7 +26,7 @@
             app:bb_tabXmlResource="@xml/bottombar_tabs" />
         <!-- Bottom bar ends her -->
 
-        <!--floating action menu Begins here-->
+        <!--floating action menu_main Begins here-->
         <com.github.clans.fab.FloatingActionMenu
             android:id="@+id/floating_action_menu"
             android:layout_width="wrap_content"
@@ -70,7 +70,7 @@
                 android:layout_alignParentEnd="true" />
 
         </com.github.clans.fab.FloatingActionMenu>
-        <!--floating action menu ends here-->
+        <!--floating action menu_main ends here-->
 
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

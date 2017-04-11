@@ -11,4 +11,6 @@
     <color name="divider">#B6B6B6</color>
     <color name="rowBackground">#F2F2F2</color>
     <color name="colorAccent">#F50057</color>
+    <color name="viewBg">#000</color>
+    <color name="album_title">#4c4c4c</color>
 </resources>

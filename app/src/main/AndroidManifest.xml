@@ -11,7 +11,7 @@
 
         <!-- Splash screen -->
         <activity
-            android:name=".SplashScreen"
+            android:name=".splash.SplashScreen"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,14 +22,18 @@
 
         <!-- Main activity -->
         <activity
-            android:name=".MainActivity"
+            android:name=".main.MainActivity"
             android:label="@string/app_name" >
         </activity>
 
         <!-- App Intro Activity -->
-        <activity android:name=".MainIntroActivity" />
+        <activity android:name=".Intro.MainIntroActivity" />
         <!-- Event Selection Activity -->
-        <activity android:name=".SelectEventConditionAction" />
+        <activity android:name=".event.EventSelection" />
+        <!-- Condition Selection Activity -->
+        <activity android:name=".condition.ConditionSelection" />
+        <!-- Action Selection Activity -->
+        <activity android:name=".action.ActionSelection" />
     </application>
 
 </manifest>
