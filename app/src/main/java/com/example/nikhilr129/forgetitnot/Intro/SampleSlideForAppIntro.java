@@ -1,4 +1,4 @@
-package com.example.nikhilr129.forgetitnot;
+package com.example.nikhilr129.forgetitnot.Intro;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

@@ -1,4 +1,4 @@
-package com.example.nikhilr129.forgetitnot;
+package com.example.nikhilr129.forgetitnot.splash;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.nikhilr129.forgetitnot.Intro.MainIntroActivity;
+import com.example.nikhilr129.forgetitnot.R;
 import com.hanks.htextview.HTextView;
 import com.hanks.htextview.HTextViewType;
 
@@ -69,7 +71,7 @@ public class SplashScreen extends AppCompatActivity {
               //  }
 //                else {
 //                    startActivity(new Intent(SplashScreen.this, MainActivity.class));
-//                    finish();
+//                  finish();
 //                }
             }
         }, SPLASH_TIME_OUT);

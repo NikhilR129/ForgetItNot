@@ -1,16 +1,21 @@
-package com.example.nikhilr129.forgetitnot;
+package com.example.nikhilr129.forgetitnot.main;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Slide;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.nikhilr129.forgetitnot.R;
+import com.example.nikhilr129.forgetitnot.event.EventSelection;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.roughike.bottombar.BottomBar;
@@ -28,7 +33,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //set Slide Transition
+        if(Build.VERSION.SDK_INT >= 21)
+            setSlideTransition();
         //Toolbar support in android
         setToolbar();
 
@@ -37,6 +44,13 @@ public class MainActivity extends AppCompatActivity {
 
         //create BottomBar and add Tab Click Listener
         createBottomBarAndClickListener();
+    }
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setSlideTransition() {
+        Slide s = new Slide();
+        s.setDuration(500);
+        getWindow().setEnterTransition(s);
+
     }
 
     private void setToolbar() {
@@ -51,9 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
         floatingActionButton1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //TODO something when floating action menu first item clicked
-                startActivity(new Intent(MainActivity.this, SelectEventConditionAction.class));
-                finish();
+                //TODO something when floating action menu_main first item clicked
+                startActivity(new Intent(MainActivity.this, EventSelection.class));
             }
         });
     }
@@ -69,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
+        inflater.inflate(R.menu.menu_main, menu);
         return true;
     }
     @Override
@@ -89,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.share:
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
-                String shareBody = "Check out this awesome app.It automates most of the boring tasks in Android";
+                String shareBody = "Check out this awesome app.(LINK HERE)It automates most of the boring tasks in Android";
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "ForgetItNot");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
