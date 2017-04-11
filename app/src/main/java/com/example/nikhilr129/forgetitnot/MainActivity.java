@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.share:
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
-                String shareBody = "Check out this awesome app.It automates most of the boring tasks in Android";
+                String shareBody = "Check out this awesome app.(LINK HERE)It automates most of the boring tasks in Android";
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "ForgetItNot");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
