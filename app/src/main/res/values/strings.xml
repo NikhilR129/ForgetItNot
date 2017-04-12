@@ -2,5 +2,8 @@
     <string name="app_name">Forget IT !</string>
     <!-- fab button rule name -->
     <string name="add_rule">Add Sample Rule</string>
+    <string name="discard_event">Discard Event</string>
+    <string name="select_event">Select Event</string>
+    <string name="backdrop_title">Select The Event[s]</string>
 
 </resources>

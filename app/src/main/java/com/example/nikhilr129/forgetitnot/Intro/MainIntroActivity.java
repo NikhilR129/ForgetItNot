@@ -1,13 +1,20 @@
-package com.example.nikhilr129.forgetitnot;
+package com.example.nikhilr129.forgetitnot.Intro;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.nikhilr129.forgetitnot.main.MainActivity;
+import com.example.nikhilr129.forgetitnot.R;
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 
@@ -21,6 +28,16 @@ public class MainIntroActivity extends AppIntro {
         makeFullScreen();
         super.onCreate(savedInstanceState);
         initSlides();
+        if(Build.VERSION.SDK_INT >= 21)
+            setTransition();
+    }
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setTransition() {
+        TransitionInflater tf = TransitionInflater.from(this);
+        Transition t = tf.inflateTransition(R.transition.fadetransition);       ;
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().setExitTransition(t);
+            }
     }
 
     private void initSlides() {
@@ -42,7 +59,8 @@ public class MainIntroActivity extends AppIntro {
     public void onSkipPressed(Fragment currentFragment) {
         //super.onSkipPressed(currentFragment);
         // Do something when users tap on Skip button.
-        startActivity(new Intent(MainIntroActivity.this, MainActivity.class));
+        ActivityOptionsCompat compat = setActivityAnimation();
+        startActivity(new Intent(MainIntroActivity.this, MainActivity.class), compat.toBundle());
         finish();
     }
 
@@ -50,8 +68,12 @@ public class MainIntroActivity extends AppIntro {
     public void onDonePressed(Fragment currentFragment) {
      //   super.onDonePressed(currentFragment);
         // Do something when users tap on Done button.
-        startActivity(new Intent(MainIntroActivity.this, MainActivity.class));
+        ActivityOptionsCompat compat = setActivityAnimation();
+        startActivity(new Intent(MainIntroActivity.this, MainActivity.class), compat.toBundle());
         finish();
-
+    }
+    private ActivityOptionsCompat setActivityAnimation() {
+        ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation(MainIntroActivity.this, null);
+        return compat;
     }
 }
