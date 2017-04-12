@@ -70,7 +70,13 @@ public class ConditionAdapter extends RecyclerView.Adapter<ConditionAdapter.MyVi
         }
         // loading condition cover using Glide library
         Glide.with(mContext).load(condition.getThumbnail()).into(holder.thumbnail);
-
+        holder.thumbnail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                condition.setSelected();
+                notifyDataSetChanged();
+            }
+        });
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,13 +113,9 @@ public class ConditionAdapter extends RecyclerView.Adapter<ConditionAdapter.MyVi
             switch (menuItem.getItemId()) {
                 case R.id.discard_condition:
                     Toast.makeText(mContext, "Discard Condition" + condition.getName(), Toast.LENGTH_SHORT).show();
-                    condition.setSelected(false);
-                    notifyDataSetChanged();
                     return true;
                 case R.id.select_condition:
                     Toast.makeText(mContext, "Select Condition" + condition.getName(), Toast.LENGTH_SHORT).show();
-                    condition.setSelected(true);
-                    notifyDataSetChanged();
                     return true;
                 default:
             }

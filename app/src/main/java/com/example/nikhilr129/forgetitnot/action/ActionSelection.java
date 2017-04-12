@@ -54,7 +54,7 @@ public class ActionSelection extends AppCompatActivity{
         prepareActions();
 
         try {
-            Glide.with(this).load(R.drawable.cover).into((ImageView) findViewById(R.id.action_backdrop));
+            Glide.with(this).load(R.drawable.action_coverpage).into((ImageView) findViewById(R.id.action_backdrop));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -107,38 +107,38 @@ public class ActionSelection extends AppCompatActivity{
      */
     private void prepareActions() {
         int[] covers = new int[]{
-                R.drawable.time,
-                R.drawable.incoming,
-                R.drawable.outgoing,
-                R.drawable.location,
-                R.drawable.headset,
-                R.drawable.bluetooth,
-                R.drawable.battery,
-                R.drawable.power
+                R.drawable.profile,
+                R.drawable.message,
+                R.drawable.wifi,
+                R.drawable.notify,
+                R.drawable.loading_app,
+                R.drawable.speakerphone,
+                R.drawable.volume,
+                R.drawable.wallpaper
         };
 
-        Action a = new Action("Time", covers[0]);
+        Action a = new Action("Profile", covers[0]);
         ActionList.add(a);
 
-        a = new Action("Incoming Call", covers[1]);
+        a = new Action("Message", covers[1]);
         ActionList.add(a);
 
-        a = new Action("Outgoing Call", covers[2]);
+        a = new Action("Wifi", covers[2]);
         ActionList.add(a);
 
-        a = new Action("Location",  covers[3]);
+        a = new Action("Notify",  covers[3]);
         ActionList.add(a);
 
-        a = new Action("HeadSet",  covers[4]);
+        a = new Action("Load App",  covers[4]);
         ActionList.add(a);
 
-        a = new Action("Bluetooth",  covers[5]);
+        a = new Action("Speakerphone",  covers[5]);
         ActionList.add(a);
 
-        a = new Action("Battery",  covers[6]);
+        a = new Action("Volume",  covers[6]);
         ActionList.add(a);
 
-        a = new Action("Power",  covers[7]);
+        a = new Action("Wallpaper",  covers[7]);
         ActionList.add(a);
 
         adapter.notifyDataSetChanged();

@@ -61,10 +61,10 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        final Action Action = ActionList.get(position);
-        holder.title.setText(Action.getName());
-        //c
-        if(Action.isSelected()){
+        final Action action = ActionList.get(position);
+        holder.title.setText(action.getName());
+        //used for changing the background color on click
+        if(action.isSelected()){
             holder.cardView.setCardElevation(16);
             holder.cardView.setCardBackgroundColor(Color.parseColor("#bdbdbd"));
 
@@ -73,12 +73,18 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.MyViewHold
             holder.cardView.setCardBackgroundColor(Color.parseColor("#f5f5f5"));
         }
         // loading Action cover using Glide library
-        Glide.with(mContext).load(Action.getThumbnail()).into(holder.thumbnail);
-
+        Glide.with(mContext).load(action.getThumbnail()).into(holder.thumbnail);
+        holder.thumbnail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                action.setSelected();
+                notifyDataSetChanged();
+            }
+        });
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopupMenu(holder.overflow, Action, holder);
+                showPopupMenu(holder.overflow, action, holder);
             }
         });
     }
@@ -111,13 +117,9 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.MyViewHold
             switch (menuItem.getItemId()) {
                 case R.id.discard_Action:
                     Toast.makeText(mContext, "Discard Action" + Action.getName(), Toast.LENGTH_SHORT).show();
-                    Action.setSelected(false);
-                    notifyDataSetChanged();
                     return true;
                 case R.id.select_Action:
                     Toast.makeText(mContext, "Select Action" + Action.getName(), Toast.LENGTH_SHORT).show();
-                    Action.setSelected(true);
-                    notifyDataSetChanged();
                     return true;
                 default:
             }
