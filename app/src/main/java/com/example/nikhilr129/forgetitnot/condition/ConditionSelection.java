@@ -110,38 +110,42 @@ public class ConditionSelection extends AppCompatActivity{
      */
     private void prepareconditions() {
         int[] covers = new int[]{
-                R.drawable.time,
-                R.drawable.incoming,
-                R.drawable.outgoing,
-                R.drawable.location,
-                R.drawable.headset,
-                R.drawable.bluetooth,
                 R.drawable.battery,
-                R.drawable.power
+                R.drawable.network,
+                R.drawable.connection,
+                R.drawable.screen,
+                R.drawable.time,
+                R.drawable.volume,
+                R.drawable.system,
+                R.drawable.apps,
+                R.drawable.orientation
         };
 
-        Condition a = new Condition("Time", covers[0]);
+        Condition a = new Condition("Battery", covers[0]);
         conditionList.add(a);
 
-        a = new Condition("Incoming Call", covers[1]);
+        a = new Condition("Network", covers[1]);
         conditionList.add(a);
 
-        a = new Condition("Outgoing Call", covers[2]);
+        a = new Condition("Connection", covers[2]);
         conditionList.add(a);
 
-        a = new Condition("Location",  covers[3]);
+        a = new Condition("Screen",  covers[3]);
         conditionList.add(a);
 
-        a = new Condition("HeadSet",  covers[4]);
+        a = new Condition("Date Time",  covers[4]);
         conditionList.add(a);
 
-        a = new Condition("Bluetooth",  covers[5]);
+        a = new Condition("Volume",  covers[5]);
         conditionList.add(a);
 
-        a = new Condition("Battery",  covers[6]);
+        a = new Condition("System",  covers[6]);
         conditionList.add(a);
 
-        a = new Condition("Power",  covers[7]);
+        a = new Condition("Apps",  covers[7]);
+        conditionList.add(a);
+
+        a = new Condition("Orientation",  covers[8]);
         conditionList.add(a);
 
         adapter.notifyDataSetChanged();
