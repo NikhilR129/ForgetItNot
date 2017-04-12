@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.transition.Slide;
+import android.transition.Fade;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //set Slide Transition
         if(Build.VERSION.SDK_INT >= 21)
-            setSlideTransition();
+            setFadeTransition();
         //Toolbar support in android
         setToolbar();
 
@@ -46,9 +46,9 @@ public class MainActivity extends AppCompatActivity {
         createBottomBarAndClickListener();
     }
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void setSlideTransition() {
-        Slide s = new Slide();
-        s.setDuration(500);
+    private void setFadeTransition() {
+        Fade s = new Fade();
+        s.setDuration(200);
         getWindow().setEnterTransition(s);
 
     }
