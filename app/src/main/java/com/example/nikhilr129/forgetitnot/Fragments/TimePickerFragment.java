@@ -1,4 +1,4 @@
-package com.example.nikhilr129.forgetitnot;
+package com.example.nikhilr129.forgetitnot.Fragments;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -32,11 +32,11 @@ public  class TimePickerFragment extends DialogFragment
                 DateFormat.is24HourFormat(getActivity()));
     }
     public interface OnDataPass {
-        public void onDataPass(String data1,String data2);
+        public void onDataPass(int data1,int data2);
     }
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         // Do something with the time chosen by the user
-        dataPasser.onDataPass(hourOfDay+"",minute+"");
+        dataPasser.onDataPass(hourOfDay,minute);
     }
     OnDataPass dataPasser;
 

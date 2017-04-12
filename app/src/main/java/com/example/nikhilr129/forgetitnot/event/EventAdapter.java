@@ -1,7 +1,13 @@
 package com.example.nikhilr129.forgetitnot.event;
 
+import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +21,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.nikhilr129.forgetitnot.Helpers.ContactPickerActivity;
+import com.example.nikhilr129.forgetitnot.Helpers.LocationPickerActivity;
+import com.example.nikhilr129.forgetitnot.Helpers.TimePickerActivity;
 import com.example.nikhilr129.forgetitnot.R;
+import com.example.nikhilr129.forgetitnot.Fragments.TimePickerFragment;
 
 import java.util.List;
 
@@ -43,7 +53,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
     }
 
 
-    public EventAdapter(Context mContext, List<Event> eventList) {
+        public EventAdapter(Context mContext, List<Event> eventList) {
         this.mContext = mContext;
         this.eventList = eventList;
     }
@@ -71,10 +81,33 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
         // loading event cover using Glide library
         Glide.with(mContext).load(event.getThumbnail()).into(holder.thumbnail);
 
-        holder.overflow.setOnClickListener(new View.OnClickListener() {
+        holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopupMenu(holder.overflow, event, holder);
+                Intent i;
+                switch (holder.title.getText().toString())
+                {
+                    case "Time":
+                        i=new Intent(mContext,TimePickerActivity.class);
+                        ((Activity)mContext).startActivityForResult(i,1);
+                        break;
+                    case "Incoming Call":
+                        i= new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
+                        i.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE); // Show user only contacts w/ phone numbers
+                        ((Activity)mContext).startActivityForResult(i, 2);
+                        break;
+
+                    case "Outgoing Call":
+                        i= new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
+                        i.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE); // Show user only contacts w/ phone numbers
+                        ((Activity)mContext).startActivityForResult(i, 3);
+                        break;
+                    case "Location":
+                        i=new Intent(mContext,LocationPickerActivity.class);
+                        ((Activity)mContext).startActivityForResult(i,1);
+                        break;
+
+                }
             }
         });
     }
