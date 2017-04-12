@@ -57,7 +57,7 @@ public class ConditionSelection extends AppCompatActivity{
         prepareconditions();
 
         try {
-            Glide.with(this).load(R.drawable.cover).into((ImageView) findViewById(R.id.condition_backdrop));
+            Glide.with(this).load(R.drawable.condition_cover).into((ImageView) findViewById(R.id.condition_backdrop));
         } catch (Exception e) {
             e.printStackTrace();
         }

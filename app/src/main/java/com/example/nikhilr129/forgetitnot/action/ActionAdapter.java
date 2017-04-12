@@ -61,10 +61,10 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        final Action Action = ActionList.get(position);
-        holder.title.setText(Action.getName());
+        final Action action = ActionList.get(position);
+        holder.title.setText(action.getName());
         //used for changing the background color on click
-        if(Action.isSelected()){
+        if(action.isSelected()){
             holder.cardView.setCardElevation(16);
             holder.cardView.setCardBackgroundColor(Color.parseColor("#bdbdbd"));
 
@@ -73,18 +73,18 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.MyViewHold
             holder.cardView.setCardBackgroundColor(Color.parseColor("#f5f5f5"));
         }
         // loading Action cover using Glide library
-        Glide.with(mContext).load(Action.getThumbnail()).into(holder.thumbnail);
+        Glide.with(mContext).load(action.getThumbnail()).into(holder.thumbnail);
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Action.setSelected();
+                action.setSelected();
                 notifyDataSetChanged();
             }
         });
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopupMenu(holder.overflow, Action, holder);
+                showPopupMenu(holder.overflow, action, holder);
             }
         });
     }
