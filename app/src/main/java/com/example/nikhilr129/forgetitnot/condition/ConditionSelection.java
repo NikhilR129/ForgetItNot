@@ -1,4 +1,4 @@
-package com.example.nikhilr129.forgetitnot.event;
+package com.example.nikhilr129.forgetitnot.condition;
 
 import android.content.Intent;
 import android.content.res.Resources;
@@ -20,7 +20,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.nikhilr129.forgetitnot.R;
-import com.example.nikhilr129.forgetitnot.condition.ConditionSelection;
+import com.example.nikhilr129.forgetitnot.action.ActionSelection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,24 +29,24 @@ import java.util.List;
  * Created by kanchicoder on 4/10/17.
  */
 
-public class EventSelection extends AppCompatActivity{
+public class ConditionSelection extends AppCompatActivity{
     private Toolbar toolbar;
 
     private RecyclerView recyclerView;
-    private EventAdapter adapter;
-    private List<Event> eventList;
+    private ConditionAdapter adapter;
+    private List<Condition> conditionList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.event_activity_main);
+        setContentView(R.layout.condition_activity_main);
         setToolbar();
         initCollapsingToolbar();
 
-        recyclerView = (RecyclerView) findViewById(R.id.event_recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.condition_recycler_view);
 
-        eventList = new ArrayList<>();
-        adapter = new EventAdapter(this, eventList);
+        conditionList = new ArrayList<>();
+        adapter = new ConditionAdapter(this, conditionList);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -54,10 +54,10 @@ public class EventSelection extends AppCompatActivity{
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        prepareEvents();
+        prepareconditions();
 
         try {
-            Glide.with(this).load(R.drawable.cover).into((ImageView) findViewById(R.id.event_backdrop));
+            Glide.with(this).load(R.drawable.cover).into((ImageView) findViewById(R.id.condition_backdrop));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,9 +67,9 @@ public class EventSelection extends AppCompatActivity{
      * fonction for setting toolbar
      */
     private void setToolbar() {
-        toolbar = (Toolbar) findViewById(R.id.event_toolbar);
+        toolbar = (Toolbar) findViewById(R.id.condition_toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Events");
+        toolbar.setTitle("conditions");
         toolbar.setTitleTextColor(getResources().getColor(R.color.iconsTint));
         toolbar.setSubtitleTextColor(getResources().getColor(R.color.iconsTint));
     }
@@ -79,9 +79,9 @@ public class EventSelection extends AppCompatActivity{
      */
     private void initCollapsingToolbar() {
         final CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.event_collapsing_toolbar);
+                (CollapsingToolbarLayout) findViewById(R.id.condition_collapsing_toolbar);
         collapsingToolbar.setTitle(" ");
-        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.event_appbar);
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.condition_appbar);
         appBarLayout.setExpanded(true);
 
         // hiding & showing the title when toolbar expanded & collapsed
@@ -108,7 +108,7 @@ public class EventSelection extends AppCompatActivity{
     /**
      * Adding few albums for testing
      */
-    private void prepareEvents() {
+    private void prepareconditions() {
         int[] covers = new int[]{
                 R.drawable.time,
                 R.drawable.incoming,
@@ -120,29 +120,29 @@ public class EventSelection extends AppCompatActivity{
                 R.drawable.power
         };
 
-        Event a = new Event("Time", covers[0]);
-        eventList.add(a);
+        Condition a = new Condition("Time", covers[0]);
+        conditionList.add(a);
 
-        a = new Event("Incoming Call", covers[1]);
-        eventList.add(a);
+        a = new Condition("Incoming Call", covers[1]);
+        conditionList.add(a);
 
-        a = new Event("Outgoing Call", covers[2]);
-        eventList.add(a);
+        a = new Condition("Outgoing Call", covers[2]);
+        conditionList.add(a);
 
-        a = new Event("Location",  covers[3]);
-        eventList.add(a);
+        a = new Condition("Location",  covers[3]);
+        conditionList.add(a);
 
-        a = new Event("HeadSet",  covers[4]);
-        eventList.add(a);
+        a = new Condition("HeadSet",  covers[4]);
+        conditionList.add(a);
 
-        a = new Event("Bluetooth",  covers[5]);
-        eventList.add(a);
+        a = new Condition("Bluetooth",  covers[5]);
+        conditionList.add(a);
 
-        a = new Event("Battery",  covers[6]);
-        eventList.add(a);
+        a = new Condition("Battery",  covers[6]);
+        conditionList.add(a);
 
-        a = new Event("Power",  covers[7]);
-        eventList.add(a);
+        a = new Condition("Power",  covers[7]);
+        conditionList.add(a);
 
         adapter.notifyDataSetChanged();
     }
@@ -203,7 +203,7 @@ public class EventSelection extends AppCompatActivity{
         switch (item.getItemId()) {
             // action with ID action_refresh was selected
             case R.id.check:
-                startActivity(new Intent(EventSelection.this, ConditionSelection.class));
+                startActivity(new Intent(ConditionSelection.this, ActionSelection.class));
                 break;
             default:
                 break;

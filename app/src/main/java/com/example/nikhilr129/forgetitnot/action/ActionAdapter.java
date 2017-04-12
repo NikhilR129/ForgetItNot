@@ -1,4 +1,8 @@
-package com.example.nikhilr129.forgetitnot.event;
+package com.example.nikhilr129.forgetitnot.action;
+
+/**
+ * Created by kanchicoder on 4/12/17.
+ */
 
 import android.content.Context;
 import android.graphics.Color;
@@ -17,16 +21,16 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.nikhilr129.forgetitnot.R;
 
-import java.util.List;
 
+import java.util.List;
 /**
  * Created by kanchicoder on 4/10/17.
  */
 
-public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder> {
+public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.MyViewHolder> {
 
     private Context mContext;
-    private List<Event> eventList;
+    private List<Action> ActionList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView title;
@@ -43,9 +47,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
     }
 
 
-    public EventAdapter(Context mContext, List<Event> eventList) {
+    public ActionAdapter(Context mContext, List<Action> ActionList) {
         this.mContext = mContext;
-        this.eventList = eventList;
+        this.ActionList = ActionList;
     }
 
     @Override
@@ -57,10 +61,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        final Event event = eventList.get(position);
-        holder.title.setText(event.getName());
+        final Action Action = ActionList.get(position);
+        holder.title.setText(Action.getName());
         //c
-        if(event.isSelected()){
+        if(Action.isSelected()){
             holder.cardView.setCardElevation(16);
             holder.cardView.setCardBackgroundColor(Color.parseColor("#bdbdbd"));
 
@@ -68,13 +72,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
             holder.cardView.setCardElevation(8);
             holder.cardView.setCardBackgroundColor(Color.parseColor("#f5f5f5"));
         }
-        // loading event cover using Glide library
-        Glide.with(mContext).load(event.getThumbnail()).into(holder.thumbnail);
+        // loading Action cover using Glide library
+        Glide.with(mContext).load(Action.getThumbnail()).into(holder.thumbnail);
 
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopupMenu(holder.overflow, event, holder);
+                showPopupMenu(holder.overflow, Action, holder);
             }
         });
     }
@@ -82,12 +86,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
     /**
      * Showing popup menu_main when tapping on 3 dots
      */
-    private void showPopupMenu(View view, Event event,MyViewHolder holder) {
+    private void showPopupMenu(View view, Action Action, MyViewHolder holder) {
         // inflate menu_main
         PopupMenu popup = new PopupMenu(mContext, view);
         MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.menu_event_overflow, popup.getMenu());
-        popup.setOnMenuItemClickListener(new MyMenuItemClickListener(event, holder));
+        inflater.inflate(R.menu.menu_action_overflow, popup.getMenu());
+        popup.setOnMenuItemClickListener(new MyMenuItemClickListener(Action, holder));
         popup.show();
     }
 
@@ -95,24 +99,24 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
      * Click listener for popup menu_main items
      */
     class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
-        Event event;
+        Action Action;
         MyViewHolder holder;
-        public MyMenuItemClickListener(Event event, MyViewHolder holder) {
-            this.event = event;
+        public MyMenuItemClickListener(Action Action, MyViewHolder holder) {
+            this.Action = Action;
             this.holder =  holder;
         }
 
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
             switch (menuItem.getItemId()) {
-                case R.id.discard_event:
-                    Toast.makeText(mContext, "Discard Event" + event.getName(), Toast.LENGTH_SHORT).show();
-                    event.setSelected(false);
+                case R.id.discard_Action:
+                    Toast.makeText(mContext, "Discard Action" + Action.getName(), Toast.LENGTH_SHORT).show();
+                    Action.setSelected(false);
                     notifyDataSetChanged();
                     return true;
-                case R.id.select_event:
-                    Toast.makeText(mContext, "Select Event" + event.getName(), Toast.LENGTH_SHORT).show();
-                    event.setSelected(true);
+                case R.id.select_Action:
+                    Toast.makeText(mContext, "Select Action" + Action.getName(), Toast.LENGTH_SHORT).show();
+                    Action.setSelected(true);
                     notifyDataSetChanged();
                     return true;
                 default:
@@ -123,6 +127,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
 
     @Override
     public int getItemCount() {
-        return eventList.size();
+        return ActionList.size();
     }
 }

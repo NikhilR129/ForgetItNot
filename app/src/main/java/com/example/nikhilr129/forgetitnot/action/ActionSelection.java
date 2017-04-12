@@ -1,6 +1,5 @@
-package com.example.nikhilr129.forgetitnot.event;
+package com.example.nikhilr129.forgetitnot.action;
 
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -17,36 +16,34 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.nikhilr129.forgetitnot.R;
-import com.example.nikhilr129.forgetitnot.condition.ConditionSelection;
-
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * Created by kanchicoder on 4/10/17.
  */
 
-public class EventSelection extends AppCompatActivity{
+public class ActionSelection extends AppCompatActivity{
     private Toolbar toolbar;
 
     private RecyclerView recyclerView;
-    private EventAdapter adapter;
-    private List<Event> eventList;
+    private ActionAdapter adapter;
+    private List<Action> ActionList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.event_activity_main);
+        setContentView(R.layout.action_activity_main);
         setToolbar();
         initCollapsingToolbar();
 
-        recyclerView = (RecyclerView) findViewById(R.id.event_recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.action_recycler_view);
 
-        eventList = new ArrayList<>();
-        adapter = new EventAdapter(this, eventList);
+        ActionList = new ArrayList<>();
+        adapter = new ActionAdapter(this, ActionList);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -54,10 +51,10 @@ public class EventSelection extends AppCompatActivity{
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        prepareEvents();
+        prepareActions();
 
         try {
-            Glide.with(this).load(R.drawable.cover).into((ImageView) findViewById(R.id.event_backdrop));
+            Glide.with(this).load(R.drawable.cover).into((ImageView) findViewById(R.id.action_backdrop));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,9 +64,9 @@ public class EventSelection extends AppCompatActivity{
      * fonction for setting toolbar
      */
     private void setToolbar() {
-        toolbar = (Toolbar) findViewById(R.id.event_toolbar);
+        toolbar = (Toolbar) findViewById(R.id.action_toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Events");
+        toolbar.setTitle("Actions");
         toolbar.setTitleTextColor(getResources().getColor(R.color.iconsTint));
         toolbar.setSubtitleTextColor(getResources().getColor(R.color.iconsTint));
     }
@@ -79,9 +76,9 @@ public class EventSelection extends AppCompatActivity{
      */
     private void initCollapsingToolbar() {
         final CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.event_collapsing_toolbar);
+                (CollapsingToolbarLayout) findViewById(R.id.action_collapsing_toolbar);
         collapsingToolbar.setTitle(" ");
-        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.event_appbar);
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.action_appbar);
         appBarLayout.setExpanded(true);
 
         // hiding & showing the title when toolbar expanded & collapsed
@@ -108,7 +105,7 @@ public class EventSelection extends AppCompatActivity{
     /**
      * Adding few albums for testing
      */
-    private void prepareEvents() {
+    private void prepareActions() {
         int[] covers = new int[]{
                 R.drawable.time,
                 R.drawable.incoming,
@@ -120,29 +117,29 @@ public class EventSelection extends AppCompatActivity{
                 R.drawable.power
         };
 
-        Event a = new Event("Time", covers[0]);
-        eventList.add(a);
+        Action a = new Action("Time", covers[0]);
+        ActionList.add(a);
 
-        a = new Event("Incoming Call", covers[1]);
-        eventList.add(a);
+        a = new Action("Incoming Call", covers[1]);
+        ActionList.add(a);
 
-        a = new Event("Outgoing Call", covers[2]);
-        eventList.add(a);
+        a = new Action("Outgoing Call", covers[2]);
+        ActionList.add(a);
 
-        a = new Event("Location",  covers[3]);
-        eventList.add(a);
+        a = new Action("Location",  covers[3]);
+        ActionList.add(a);
 
-        a = new Event("HeadSet",  covers[4]);
-        eventList.add(a);
+        a = new Action("HeadSet",  covers[4]);
+        ActionList.add(a);
 
-        a = new Event("Bluetooth",  covers[5]);
-        eventList.add(a);
+        a = new Action("Bluetooth",  covers[5]);
+        ActionList.add(a);
 
-        a = new Event("Battery",  covers[6]);
-        eventList.add(a);
+        a = new Action("Battery",  covers[6]);
+        ActionList.add(a);
 
-        a = new Event("Power",  covers[7]);
-        eventList.add(a);
+        a = new Action("Power",  covers[7]);
+        ActionList.add(a);
 
         adapter.notifyDataSetChanged();
     }
@@ -203,7 +200,8 @@ public class EventSelection extends AppCompatActivity{
         switch (item.getItemId()) {
             // action with ID action_refresh was selected
             case R.id.check:
-                startActivity(new Intent(EventSelection.this, ConditionSelection.class));
+                Toast.makeText(this, "Refresh selected", Toast.LENGTH_SHORT)
+                        .show();
                 break;
             default:
                 break;

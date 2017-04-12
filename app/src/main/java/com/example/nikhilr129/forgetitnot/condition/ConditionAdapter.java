@@ -1,4 +1,4 @@
-package com.example.nikhilr129.forgetitnot.event;
+package com.example.nikhilr129.forgetitnot.condition;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -23,10 +23,10 @@ import java.util.List;
  * Created by kanchicoder on 4/10/17.
  */
 
-public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder> {
+public class ConditionAdapter extends RecyclerView.Adapter<ConditionAdapter.MyViewHolder> {
 
     private Context mContext;
-    private List<Event> eventList;
+    private List<Condition> conditionList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView title;
@@ -43,9 +43,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
     }
 
 
-    public EventAdapter(Context mContext, List<Event> eventList) {
+    public ConditionAdapter(Context mContext, List<Condition> conditionList) {
         this.mContext = mContext;
-        this.eventList = eventList;
+        this.conditionList = conditionList;
     }
 
     @Override
@@ -57,10 +57,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        final Event event = eventList.get(position);
-        holder.title.setText(event.getName());
+        final Condition condition = conditionList.get(position);
+        holder.title.setText(condition.getName());
         //c
-        if(event.isSelected()){
+        if(condition.isSelected()){
             holder.cardView.setCardElevation(16);
             holder.cardView.setCardBackgroundColor(Color.parseColor("#bdbdbd"));
 
@@ -68,13 +68,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
             holder.cardView.setCardElevation(8);
             holder.cardView.setCardBackgroundColor(Color.parseColor("#f5f5f5"));
         }
-        // loading event cover using Glide library
-        Glide.with(mContext).load(event.getThumbnail()).into(holder.thumbnail);
+        // loading condition cover using Glide library
+        Glide.with(mContext).load(condition.getThumbnail()).into(holder.thumbnail);
 
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopupMenu(holder.overflow, event, holder);
+                showPopupMenu(holder.overflow, condition, holder);
             }
         });
     }
@@ -82,12 +82,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
     /**
      * Showing popup menu_main when tapping on 3 dots
      */
-    private void showPopupMenu(View view, Event event,MyViewHolder holder) {
+    private void showPopupMenu(View view, Condition condition, MyViewHolder holder) {
         // inflate menu_main
         PopupMenu popup = new PopupMenu(mContext, view);
         MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.menu_event_overflow, popup.getMenu());
-        popup.setOnMenuItemClickListener(new MyMenuItemClickListener(event, holder));
+        inflater.inflate(R.menu.menu_condition_overflow, popup.getMenu());
+        popup.setOnMenuItemClickListener(new MyMenuItemClickListener(condition, holder));
         popup.show();
     }
 
@@ -95,24 +95,24 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
      * Click listener for popup menu_main items
      */
     class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
-        Event event;
+        Condition condition;
         MyViewHolder holder;
-        public MyMenuItemClickListener(Event event, MyViewHolder holder) {
-            this.event = event;
+        public MyMenuItemClickListener(Condition condition, MyViewHolder holder) {
+            this.condition = condition;
             this.holder =  holder;
         }
 
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
             switch (menuItem.getItemId()) {
-                case R.id.discard_event:
-                    Toast.makeText(mContext, "Discard Event" + event.getName(), Toast.LENGTH_SHORT).show();
-                    event.setSelected(false);
+                case R.id.discard_condition:
+                    Toast.makeText(mContext, "Discard Condition" + condition.getName(), Toast.LENGTH_SHORT).show();
+                    condition.setSelected(false);
                     notifyDataSetChanged();
                     return true;
-                case R.id.select_event:
-                    Toast.makeText(mContext, "Select Event" + event.getName(), Toast.LENGTH_SHORT).show();
-                    event.setSelected(true);
+                case R.id.select_condition:
+                    Toast.makeText(mContext, "Select Condition" + condition.getName(), Toast.LENGTH_SHORT).show();
+                    condition.setSelected(true);
                     notifyDataSetChanged();
                     return true;
                 default:
@@ -123,6 +123,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
 
     @Override
     public int getItemCount() {
-        return eventList.size();
+        return conditionList.size();
     }
 }

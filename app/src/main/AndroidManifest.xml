@@ -30,6 +30,10 @@
         <activity android:name=".Intro.MainIntroActivity" />
         <!-- Event Selection Activity -->
         <activity android:name=".event.EventSelection" />
+        <!-- Condition Selection Activity -->
+        <activity android:name=".condition.ConditionSelection" />
+        <!-- Action Selection Activity -->
+        <activity android:name=".action.ActionSelection" />
     </application>
 
 </manifest>
