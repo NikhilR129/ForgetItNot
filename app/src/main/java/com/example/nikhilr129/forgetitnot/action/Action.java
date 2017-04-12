@@ -10,8 +10,8 @@ public class Action {
     private int thumbnail;
     private boolean isSelected;
 
-    public void setSelected(Boolean value){
-        this.isSelected = value;
+    public void setSelected(){
+        this.isSelected = !this.isSelected;
     }
 
     public boolean isSelected(){

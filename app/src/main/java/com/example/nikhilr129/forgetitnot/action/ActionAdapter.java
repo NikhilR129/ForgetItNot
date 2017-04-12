@@ -63,7 +63,7 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.MyViewHold
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         final Action Action = ActionList.get(position);
         holder.title.setText(Action.getName());
-        //c
+        //used for changing the background color on click
         if(Action.isSelected()){
             holder.cardView.setCardElevation(16);
             holder.cardView.setCardBackgroundColor(Color.parseColor("#bdbdbd"));
@@ -74,7 +74,13 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.MyViewHold
         }
         // loading Action cover using Glide library
         Glide.with(mContext).load(Action.getThumbnail()).into(holder.thumbnail);
-
+        holder.thumbnail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Action.setSelected();
+                notifyDataSetChanged();
+            }
+        });
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,13 +117,9 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.MyViewHold
             switch (menuItem.getItemId()) {
                 case R.id.discard_Action:
                     Toast.makeText(mContext, "Discard Action" + Action.getName(), Toast.LENGTH_SHORT).show();
-                    Action.setSelected(false);
-                    notifyDataSetChanged();
                     return true;
                 case R.id.select_Action:
                     Toast.makeText(mContext, "Select Action" + Action.getName(), Toast.LENGTH_SHORT).show();
-                    Action.setSelected(true);
-                    notifyDataSetChanged();
                     return true;
                 default:
             }
