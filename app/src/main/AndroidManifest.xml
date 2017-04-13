@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.nikhilr129.forgetitnot">
-
+    <uses-permission android:name="android.permission.SET_WALLPAPER"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -30,8 +30,6 @@
         <activity android:name=".Intro.MainIntroActivity" />
         <!-- Event Selection Activity -->
         <activity android:name=".event.EventSelection" />
-        <!-- Condition Selection Activity -->
-        <activity android:name=".condition.ConditionSelection" />
         <!-- Action Selection Activity -->
         <activity android:name=".action.ActionSelection" />
     </application>

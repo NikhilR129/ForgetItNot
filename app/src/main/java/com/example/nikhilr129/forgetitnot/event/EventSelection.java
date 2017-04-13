@@ -20,7 +20,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.nikhilr129.forgetitnot.R;
-import com.example.nikhilr129.forgetitnot.condition.ConditionSelection;
+import com.example.nikhilr129.forgetitnot.action.ActionSelection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -203,7 +203,7 @@ public class EventSelection extends AppCompatActivity{
         switch (item.getItemId()) {
             // action with ID action_refresh was selected
             case R.id.check:
-                startActivity(new Intent(EventSelection.this, ConditionSelection.class));
+                startActivity(new Intent(EventSelection.this, ActionSelection.class));
                 break;
             default:
                 break;
