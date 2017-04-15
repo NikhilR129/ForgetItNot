@@ -19,7 +19,7 @@ public class TimePickerActivity extends AppCompatActivity {
 
     private void init()
     {
-        returnintent=new Intent();
+        returnintent=getIntent();
         already_checked=false;
     }
     @Override
@@ -46,7 +46,7 @@ public class TimePickerActivity extends AppCompatActivity {
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!(mon.isSelected() || tue.isSelected() || wed.isSelected() || thurs.isSelected() ||fri.isSelected() || sat.isSelected() || sun.isSelected()))
+                if(!(mon.isChecked() || tue.isChecked() || wed.isChecked() || thurs.isChecked() ||fri.isChecked() || sat.isChecked() || sun.isChecked()))
                 {
                     Toast.makeText(TimePickerActivity.this, "Please select atleast one day", Toast.LENGTH_SHORT).show();
                     return;
@@ -70,17 +70,31 @@ public class TimePickerActivity extends AppCompatActivity {
                     sat.setChecked(false);
                     sun.setChecked(false);
                     already_checked=false;
+                    mon.setClickable(true);
+                    tue.setClickable(true);
+                    wed.setClickable(true);
+                    thurs.setClickable(true);
+                    fri.setClickable(true);
+                    sat.setClickable(true);
+                    sun.setClickable(true);
                 }
                 else
                 {
-                    mon.setChecked(true);
-                    tue.setChecked(true);
+                    mon.setChecked(true); 
+                    tue.setChecked(true); 
                     wed.setChecked(true);
                     thurs.setChecked(true);
                     fri.setChecked(true);
                     sat.setChecked(true);
                     sun.setChecked(true);
                     already_checked=true;
+                    mon.setClickable(false);
+                    tue.setClickable(false);
+                    wed.setClickable(false);
+                    thurs.setClickable(false);
+                    fri.setClickable(false);
+                    sat.setClickable(false);
+                    sun.setClickable(false);
                 }
                 
             }
