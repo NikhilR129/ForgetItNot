@@ -15,7 +15,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,26 +45,27 @@ public class ActionSelectionActivity extends AppCompatActivity{
     //test done by nikhil
     private final int SELECT_PHOTO = 0;
 
+    private void setImage(Uri selectedImage) throws IOException {
+        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+        WallpaperDialog obj = new WallpaperDialog(ActionSelectionActivity.this);
+        AlertDialog dialog = obj.create();
+        dialog.show();
+        View v = obj.getView();
+        ImageView img = (ImageView) v.findViewById(R.id.action_wallpaper_imageview);
+        img.setImageBitmap(bitmap);
+    }
+
+
+
     public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
         switch(requestCode) {
             case 0:
                 if(resultCode == RESULT_OK){
-                    Log.v("entered", "entered");
+
                     Uri selectedImage = imageReturnedIntent.getData();
-                    Log.v("entered", selectedImage.toString());
-//                    ImageView imageView = (ImageView) findViewById(R.id.action_wallpaper_imageview);
-//                    imageView.setImageDrawable(getResources().getDrawable(R.drawable.headset));
                     try {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-                        WallpaperDialog wd=new WallpaperDialog(ActionSelectionActivity.this);
-                        AlertDialog ad=wd.create();
-                        View v=wd.getView();
-                        ImageView iv=(ImageView)v.findViewById(R.id.action_wallpaper_imageview);
-                        iv.setImageBitmap(bitmap);
-
-                        ad.show();
-
+                        setImage(selectedImage);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
