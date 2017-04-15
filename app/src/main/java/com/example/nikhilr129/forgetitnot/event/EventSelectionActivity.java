@@ -20,10 +20,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.nikhilr129.forgetitnot.R;
-
-import com.example.nikhilr129.forgetitnot.action.ActionSelectionActivity;
 import com.example.nikhilr129.forgetitnot.Fragments.TimePickerFragment;
+import com.example.nikhilr129.forgetitnot.R;
+import com.example.nikhilr129.forgetitnot.action.ActionSelectionActivity;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,7 +58,7 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
        {
            case SELECT_TIME:
                if(resultCode==RESULT_OK) {
-                   Toast.makeText(this, data.getBundleExtra("Time").toString(), Toast.LENGTH_SHORT).show();
+                   //Toast.makeText(this, data.getBundleExtra("Time").toString(), Toast.LENGTH_SHORT).show();
                }
                break;
            case SELECT_CONTACT:
@@ -67,7 +68,9 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
                break;
            case SELECT_LOCATION:
                if(resultCode==RESULT_OK) {
-
+                   Place place = PlacePicker.getPlace(this,data);
+                   String toastMsg = String.format("Place: %s", place.getName());
+                   Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
                }
                break;
            case SELECT_HEADSET_STATUS:

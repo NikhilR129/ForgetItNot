@@ -37,7 +37,6 @@
         <activity android:name=".action.ActionSelectionActivity" />
         <activity android:name=".Helpers.TimePickerActivity" />
         <activity android:name=".Helpers.ContactPickerActivity" />
-        <activity android:name=".Helpers.LocationPickerActivity"></activity>
     </application>
 
 </manifest>

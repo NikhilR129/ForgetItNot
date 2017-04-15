@@ -44,6 +44,7 @@ public class ActionSelectionActivity extends AppCompatActivity{
 
     //test done by nikhil
     private final int SELECT_PHOTO = 0;
+
     private void setImage(Uri selectedImage) throws IOException {
         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
         WallpaperDialog obj = new WallpaperDialog(ActionSelectionActivity.this);
@@ -53,11 +54,15 @@ public class ActionSelectionActivity extends AppCompatActivity{
         ImageView img = (ImageView) v.findViewById(R.id.action_wallpaper_imageview);
         img.setImageBitmap(bitmap);
     }
+
+
+
     public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
         switch(requestCode) {
             case 0:
                 if(resultCode == RESULT_OK){
+
                     Uri selectedImage = imageReturnedIntent.getData();
                     try {
                         setImage(selectedImage);

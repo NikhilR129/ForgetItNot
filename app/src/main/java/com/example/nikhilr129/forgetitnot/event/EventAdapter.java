@@ -1,16 +1,15 @@
 package com.example.nikhilr129.forgetitnot.event;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,11 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.nikhilr129.forgetitnot.Helpers.ContactPickerActivity;
-import com.example.nikhilr129.forgetitnot.Helpers.LocationPickerActivity;
 import com.example.nikhilr129.forgetitnot.Helpers.TimePickerActivity;
 import com.example.nikhilr129.forgetitnot.R;
-import com.example.nikhilr129.forgetitnot.Fragments.TimePickerFragment;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.util.List;
 
@@ -100,12 +99,19 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
                     case "Outgoing Call":
                         i= new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
                         i.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE); // Show user only contacts w/ phone numbers
-                        ((Activity)mContext).startActivityForResult(i, 3);
+                        ((Activity)mContext).startActivityForResult(i, 2);
                         break;
                     case "Location":
-                        i=new Intent(mContext,LocationPickerActivity.class);
-                        ((Activity)mContext).startActivityForResult(i,1);
-                        break;
+                        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                        try {
+                            ((Activity)mContext).startActivityForResult(builder.build((Activity)mContext), 3);
+                            Log.d("hello","world");
+                        } catch (GooglePlayServicesRepairableException e) {
+                            e.printStackTrace();
+                        } catch (GooglePlayServicesNotAvailableException e) {
+                            e.printStackTrace();
+                        }
+                       break;
 
                 }
             }
