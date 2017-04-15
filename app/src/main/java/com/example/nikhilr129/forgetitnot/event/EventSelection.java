@@ -17,25 +17,95 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.nikhilr129.forgetitnot.R;
-import com.example.nikhilr129.forgetitnot.action.ActionSelection;
+
+import com.example.nikhilr129.forgetitnot.action.ActionSelectio
+import com.example.nikhilr129.forgetitnot.Fragments.TimePickerFragment;
+import com.example.nikhilr129.forgetitnot.condition.ConditionSelection;
+
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by kanchicoder on 4/10/17.
  */
 
-public class EventSelection extends AppCompatActivity{
+public class EventSelection extends AppCompatActivity implements TimePickerFragment.OnDataPass {
     private Toolbar toolbar;
-
     private RecyclerView recyclerView;
     private EventAdapter adapter;
     private List<Event> eventList;
 
+    //test done by nikhil
+    private final int SELECT_TIME=1;
+    private final int SELECT_CONTACT=2;
+    private final int SELECT_LOCATION=3;
+    private final int SELECT_HEADSET_STATUS=4;
+    private final int SELECT_BLUTOOTH_STATUS=5;
+    private final int SELECT_BATTERY_STATUS=6;
+    private final int SELECT_POWER_STATUS=7;
+
+
+    HashMap<String,String> hm;
+
+    EventSelection()
+    {
+        hm=new HashMap<>();
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+       switch(requestCode)
+       {
+           case SELECT_TIME:
+               if(resultCode==RESULT_OK) {
+                   Toast.makeText(this, data.getBundleExtra("Time").toString(), Toast.LENGTH_SHORT).show();
+               }
+               break;
+           case SELECT_CONTACT:
+               if(resultCode==RESULT_OK) {
+
+               }
+               break;
+           case SELECT_LOCATION:
+               if(resultCode==RESULT_OK) {
+
+               }
+               break;
+           case SELECT_HEADSET_STATUS:
+               if(resultCode==RESULT_OK) {
+
+               }
+               break;
+           case SELECT_BLUTOOTH_STATUS:
+               if(resultCode==RESULT_OK) {
+
+               }
+               break;
+           case SELECT_BATTERY_STATUS:
+               if(resultCode==RESULT_OK) {
+
+               }
+               break;
+           case SELECT_POWER_STATUS:
+               if(resultCode==RESULT_OK) {
+
+               }
+               break;
+
+       }
+    }
+    //
+
+    @Override
+    public void onDataPass(int data1,int data2) {
+        Toast.makeText(this, data1+""+data2, Toast.LENGTH_SHORT).show();
+
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +132,8 @@ public class EventSelection extends AppCompatActivity{
             e.printStackTrace();
         }
     }
+
+
 
     /**
      * fonction for setting toolbar
