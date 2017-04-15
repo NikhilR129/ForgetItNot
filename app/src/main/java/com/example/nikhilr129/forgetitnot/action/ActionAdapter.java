@@ -4,6 +4,7 @@ package com.example.nikhilr129.forgetitnot.action;
  * Created by kanchicoder on 4/12/17.
  */
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
@@ -20,7 +21,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.nikhilr129.forgetitnot.R;
-
+import com.example.nikhilr129.forgetitnot.action.actionDialog.NotifyDialog;
+import com.example.nikhilr129.forgetitnot.action.actionDialog.ProfileDialog;
+import com.example.nikhilr129.forgetitnot.action.actionDialog.SpeakerDialog;
+import com.example.nikhilr129.forgetitnot.action.actionDialog.VolumeDialog;
+import com.example.nikhilr129.forgetitnot.action.actionDialog.WifiDialog;
 
 import java.util.List;
 /**
@@ -64,7 +69,7 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.MyViewHold
         final Action action = ActionList.get(position);
         holder.title.setText(action.getName());
         //used for changing the background color on click
-        if(action.isSelected()){
+        if(action.getSelected()){
             holder.cardView.setCardElevation(16);
             holder.cardView.setCardBackgroundColor(Color.parseColor("#bdbdbd"));
 
@@ -77,8 +82,12 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.MyViewHold
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //function used for fetching data
+                if(!action.getSelected())
+                    fetchData(holder);
                 action.setSelected();
                 notifyDataSetChanged();
+
             }
         });
         holder.overflow.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +97,39 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.MyViewHold
             }
         });
     }
+    /**
+     * function for fetching data
+     */
+    private void fetchData(MyViewHolder holder) {
+        //Toast.makeText(mContext, holder.title.getText(), Toast.LENGTH_SHORT).show();
+        if(holder.title.getText() == "Profile"){
+            ProfileDialog obj  = new ProfileDialog(mContext);
+            AlertDialog dialog = obj.create();
+            dialog.show();
+        }
+        else if(holder.title.getText() == "Wifi") {
+            WifiDialog obj  = new WifiDialog(mContext);
+            AlertDialog dialog = obj.create();
+            dialog.show();
+        }
+        else if(holder.title.getText() == "Speakerphone") {
+            SpeakerDialog obj  = new SpeakerDialog(mContext);
+            AlertDialog dialog = obj.create();
+            dialog.show();
+        }
+        else if(holder.title.getText() == "Volume") {
+            VolumeDialog obj  = new VolumeDialog(mContext);
+            AlertDialog dialog = obj.create();
+            dialog.show();
+        }
+        else if(holder.title.getText() == "Notify") {
+            NotifyDialog obj  = new NotifyDialog(mContext);
+            AlertDialog dialog = obj.create();
+            dialog.show();
+        }
+    }
+
+
 
     /**
      * Showing popup menu_main when tapping on 3 dots

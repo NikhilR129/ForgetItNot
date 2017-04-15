@@ -14,7 +14,7 @@ public class Action {
         this.isSelected = !this.isSelected;
     }
 
-    public boolean isSelected(){
+    public boolean getSelected(){
         return isSelected;
     }
     public Action() {

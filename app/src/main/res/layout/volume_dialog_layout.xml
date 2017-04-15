@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="3"
+    android:padding="@dimen/activity_horizontal_margin">
+    <!-- Ringer Volume -->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+        <ImageView
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/bell"/>
+        <SeekBar
+            android:id="@+id/action_ring_volume"
+            android:layout_marginTop="8dp"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="10"
+            android:progress="3" />
+    </LinearLayout>
+    <!-- Media Volume -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/media"/>
+        <SeekBar
+            android:id="@+id/action_media_volume"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="10"
+            android:progress="3" />
+
+    </LinearLayout>
+    <!-- Alarm Volume -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/alarm_volume"/>
+        <SeekBar
+            android:id="@+id/action_alarm_volume"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="10"
+            android:progress="3" />
+    </LinearLayout>
+</LinearLayout>

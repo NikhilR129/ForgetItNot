@@ -21,8 +21,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.nikhilr129.forgetitnot.R;
+
+import com.example.nikhilr129.forgetitnot.action.ActionSelectio
 import com.example.nikhilr129.forgetitnot.Fragments.TimePickerFragment;
 import com.example.nikhilr129.forgetitnot.condition.ConditionSelection;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -272,7 +275,7 @@ public class EventSelection extends AppCompatActivity implements TimePickerFragm
         switch (item.getItemId()) {
             // action with ID action_refresh was selected
             case R.id.check:
-                startActivity(new Intent(EventSelection.this, ConditionSelection.class));
+                startActivity(new Intent(EventSelection.this, ActionSelection.class));
                 break;
             default:
                 break;
