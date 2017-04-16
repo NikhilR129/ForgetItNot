@@ -33,12 +33,29 @@ public  class WallpaperDialog {
         Button select = (Button) viewRoot.findViewById(R.id.action_wallpaper_select);
         Button remove = (Button) viewRoot.findViewById(R.id.action_wallpaper_remove);
         final ImageView imageView = (ImageView) viewRoot.findViewById(R.id.action_wallpaper_imageview);
+        builder.setView(viewRoot).
+                setTitle("Choose Wallpaper")
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                       dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+        final AlertDialog dialog = builder.create();
         select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 ((Activity)context).startActivityForResult(pickPhoto , 0);//one can be replaced with any action code
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                }
             }
         });
         remove.setOnClickListener(new View.OnClickListener() {
@@ -47,21 +64,6 @@ public  class WallpaperDialog {
                 imageView.setImageDrawable(null);
             }
         });
-        builder.setView(viewRoot).
-                setTitle("Choose Volume")
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        ;
-        AlertDialog dialog = builder.create();
         return dialog;
     }
 }

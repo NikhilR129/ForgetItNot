@@ -130,7 +130,7 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.MyViewHold
         }
         else if(holder.title.getText() == "Wallpaper") {
             WallpaperDialog obj = new WallpaperDialog(mContext);
-            AlertDialog dialog = obj.create();
+            final AlertDialog dialog = obj.create();
             dialog.show();
         }
     }
