@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.nikhilr129.forgetitnot.R;
-import com.example.nikhilr129.forgetitnot.event.EventSelection;
+import com.example.nikhilr129.forgetitnot.event.EventSelectionActivity;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.roughike.bottombar.BottomBar;
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //TODO something when floating action menu_main first item clicked
-                startActivity(new Intent(MainActivity.this, EventSelection.class));
+                startActivity(new Intent(MainActivity.this, EventSelectionActivity.class));
             }
         });
     }

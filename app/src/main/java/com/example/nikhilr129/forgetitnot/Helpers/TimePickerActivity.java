@@ -17,7 +17,7 @@ public class TimePickerActivity extends AppCompatActivity {
     Intent returnintent;
     boolean already_checked;
 
-    TimePickerActivity()
+    private void init()
     {
         returnintent=new Intent();
         already_checked=false;
@@ -25,6 +25,8 @@ public class TimePickerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //initialize instances;
+        init();
         setContentView(R.layout.activity_time_picker);
         TimePicker tp=(TimePicker)findViewById(R.id.timePicker);
 

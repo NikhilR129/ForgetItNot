@@ -25,6 +25,7 @@ import com.example.nikhilr129.forgetitnot.action.actionDialog.NotifyDialog;
 import com.example.nikhilr129.forgetitnot.action.actionDialog.ProfileDialog;
 import com.example.nikhilr129.forgetitnot.action.actionDialog.SpeakerDialog;
 import com.example.nikhilr129.forgetitnot.action.actionDialog.VolumeDialog;
+import com.example.nikhilr129.forgetitnot.action.actionDialog.WallpaperDialog;
 import com.example.nikhilr129.forgetitnot.action.actionDialog.WifiDialog;
 
 import java.util.List;
@@ -127,9 +128,12 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.MyViewHold
             AlertDialog dialog = obj.create();
             dialog.show();
         }
+        else if(holder.title.getText() == "Wallpaper") {
+            WallpaperDialog obj = new WallpaperDialog(mContext);
+            AlertDialog dialog = obj.create();
+            dialog.show();
+        }
     }
-
-
 
     /**
      * Showing popup menu_main when tapping on 3 dots

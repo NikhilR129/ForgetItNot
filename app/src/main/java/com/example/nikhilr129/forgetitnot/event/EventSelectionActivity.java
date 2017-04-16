@@ -22,10 +22,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.nikhilr129.forgetitnot.R;
 
-import com.example.nikhilr129.forgetitnot.action.ActionSelectio
+import com.example.nikhilr129.forgetitnot.action.ActionSelectionActivity;
 import com.example.nikhilr129.forgetitnot.Fragments.TimePickerFragment;
-import com.example.nikhilr129.forgetitnot.condition.ConditionSelection;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +33,7 @@ import java.util.List;
  * Created by kanchicoder on 4/10/17.
  */
 
-public class EventSelection extends AppCompatActivity implements TimePickerFragment.OnDataPass {
+public class EventSelectionActivity extends AppCompatActivity implements TimePickerFragment.OnDataPass {
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private EventAdapter adapter;
@@ -53,10 +51,6 @@ public class EventSelection extends AppCompatActivity implements TimePickerFragm
 
     HashMap<String,String> hm;
 
-    EventSelection()
-    {
-        hm=new HashMap<>();
-    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
        switch(requestCode)
@@ -112,6 +106,8 @@ public class EventSelection extends AppCompatActivity implements TimePickerFragm
         setContentView(R.layout.event_activity_main);
         setToolbar();
         initCollapsingToolbar();
+        //initiate hasmap;
+        hm=new HashMap<>();
 
         recyclerView = (RecyclerView) findViewById(R.id.event_recycler_view);
 
@@ -275,7 +271,7 @@ public class EventSelection extends AppCompatActivity implements TimePickerFragm
         switch (item.getItemId()) {
             // action with ID action_refresh was selected
             case R.id.check:
-                startActivity(new Intent(EventSelection.this, ActionSelection.class));
+                startActivity(new Intent(EventSelectionActivity.this, ActionSelectionActivity.class));
                 break;
             default:
                 break;
