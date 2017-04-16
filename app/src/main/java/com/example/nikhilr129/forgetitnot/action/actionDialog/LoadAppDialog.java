@@ -29,9 +29,9 @@ public  class LoadAppDialog {
     private View viewRoot;
     public  LoadAppDialog(Context context) {
         this.context  = context;
+        getPackagesDetails();
     }
     public AlertDialog create() {
-           getPackagesDetails();
             //Getting the instance of Spinner and applying OnItemSelectedListener on it
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);

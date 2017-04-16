@@ -5,8 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
-import android.provider.ContactsContract;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -25,6 +23,8 @@ import com.example.nikhilr129.forgetitnot.R;
 import com.example.nikhilr129.forgetitnot.event.eventDialog.BatteryDialog;
 import com.example.nikhilr129.forgetitnot.event.eventDialog.BluetoothDialog;
 import com.example.nikhilr129.forgetitnot.event.eventDialog.HeadsetDialog;
+import com.example.nikhilr129.forgetitnot.event.eventDialog.IncomingCallDialog;
+import com.example.nikhilr129.forgetitnot.event.eventDialog.OutGoingCallDialog;
 import com.example.nikhilr129.forgetitnot.event.eventDialog.PowerDialog;
 import com.example.nikhilr129.forgetitnot.event.eventDialog.TimeDialog;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -107,15 +107,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
                 tdialog.show();
                 break;
             case "Incoming Call":
-                i= new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
-                i.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE); // Show user only contacts w/ phone numbers
-                ((Activity)mContext).startActivityForResult(i, 2);
+                IncomingCallDialog iobj = new IncomingCallDialog(mContext);
+                iobj.create().show();
                 break;
 
-            case "Outgoing Call":
-                i= new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
-                i.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE); // Show user only contacts w/ phone numbers
-                ((Activity)mContext).startActivityForResult(i, 2);
+            case "Outgoing Call" :
+                OutGoingCallDialog oobj = new OutGoingCallDialog(mContext);
+                oobj.create().show();
                 break;
             case "Location":
                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
