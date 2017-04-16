@@ -20,7 +20,7 @@ public  class HeadsetDialog {
    public AlertDialog create() {
        AlertDialog.Builder builder = new AlertDialog.Builder(context);
        // Set the dialog title
-       builder.setTitle("Choose Profile")
+       builder.setTitle("Select")
                // Specify the list array, the items to be selected by default (null for none),
                // and the listener through which to receive callbacks when items are selected
                .setSingleChoiceItems(R.array.headset, 0, null)

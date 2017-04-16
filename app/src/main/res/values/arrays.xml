@@ -11,8 +11,19 @@
         <item>Toggle</item>
     </string-array>
     <string-array name="headset">
-        <item>Plugged In</item>
-        <item>Plugged Out</item>
+        <item>Plugged</item>
+        <item>Unplugged</item>
     </string-array>
-
+    <string-array name="power">
+        <item>Connected</item>
+        <item>Disconnected</item>
+    </string-array>
+    <string-array name="battery">
+        <item>Charging Completed</item>
+        <item>Batter Low</item>
+    </string-array>
+    <string-array name="bluetooth">
+        <item>On</item>
+        <item>Off</item>
+    </string-array>
 </resources>
