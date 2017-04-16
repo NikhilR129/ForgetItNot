@@ -26,10 +26,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Select"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:id="@+id/action_wallpaper_select"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:text="remove"
             android:id="@+id/action_wallpaper_remove"/>
     </LinearLayout>

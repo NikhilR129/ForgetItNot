@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.nikhilr129.forgetitnot.R;
+import com.example.nikhilr129.forgetitnot.action.actionDialog.LoadAppDialog;
 import com.example.nikhilr129.forgetitnot.action.actionDialog.NotifyDialog;
 import com.example.nikhilr129.forgetitnot.action.actionDialog.ProfileDialog;
 import com.example.nikhilr129.forgetitnot.action.actionDialog.SpeakerDialog;
@@ -132,6 +133,10 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.MyViewHold
             WallpaperDialog obj = new WallpaperDialog(mContext);
             final AlertDialog dialog = obj.create();
             dialog.show();
+        }
+        else if(holder.title.getText() == "Load App") {
+            LoadAppDialog obj = new LoadAppDialog(mContext);
+            obj.create().show();
         }
     }
 
