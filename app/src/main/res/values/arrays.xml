@@ -10,5 +10,9 @@
         <item>Off</item>
         <item>Toggle</item>
     </string-array>
+    <string-array name="headset">
+        <item>Plugged In</item>
+        <item>Plugged Out</item>
+    </string-array>
 
 </resources>

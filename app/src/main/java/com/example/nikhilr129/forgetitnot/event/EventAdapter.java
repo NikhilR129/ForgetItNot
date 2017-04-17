@@ -1,6 +1,7 @@
 package com.example.nikhilr129.forgetitnot.event;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.nikhilr129.forgetitnot.Helpers.TimePickerActivity;
 import com.example.nikhilr129.forgetitnot.R;
+import com.example.nikhilr129.forgetitnot.event.eventDialog.HeadsetDialog;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.ui.PlacePicker;
@@ -112,7 +114,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
                             e.printStackTrace();
                         }
                        break;
-
+                    case "HeadSet":
+                        HeadsetDialog hobj = new HeadsetDialog(mContext);
+                        AlertDialog dialog = hobj.create();
+                        dialog.show();
                 }
             }
         });
