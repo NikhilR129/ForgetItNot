@@ -1,11 +1,10 @@
 package com.example.nikhilr129.forgetitnot.event;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
-import android.provider.ContactsContract;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -20,8 +19,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.nikhilr129.forgetitnot.Helpers.TimePickerActivity;
 import com.example.nikhilr129.forgetitnot.R;
+import com.example.nikhilr129.forgetitnot.event.eventDialog.BatteryDialog;
+import com.example.nikhilr129.forgetitnot.event.eventDialog.BluetoothDialog;
+import com.example.nikhilr129.forgetitnot.event.eventDialog.HeadsetDialog;
+import com.example.nikhilr129.forgetitnot.event.eventDialog.IncomingCallDialog;
+import com.example.nikhilr129.forgetitnot.event.eventDialog.OutGoingCallDialog;
+import com.example.nikhilr129.forgetitnot.event.eventDialog.PowerDialog;
+import com.example.nikhilr129.forgetitnot.event.eventDialog.TimeDialog;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.ui.PlacePicker;
@@ -68,8 +73,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         final Event event = eventList.get(position);
         holder.title.setText(event.getName());
-        //c
-        if(event.isSelected()){
+        //used for changing the background color on click
+        if(event.getSelected()){
             holder.cardView.setCardElevation(16);
             holder.cardView.setCardBackgroundColor(Color.parseColor("#bdbdbd"));
 
@@ -83,39 +88,65 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i;
-                switch (holder.title.getText().toString())
-                {
-                    case "Time":
-                        i=new Intent(mContext,TimePickerActivity.class);
-                        ((Activity)mContext).startActivityForResult(i,1);
-                        break;
-                    case "Incoming Call":
-                        i= new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
-                        i.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE); // Show user only contacts w/ phone numbers
-                        ((Activity)mContext).startActivityForResult(i, 2);
-                        break;
+                //function used for fetching data
+                if (!event.getSelected())
+                    fetchData(holder);
+                event.setSelected();
+                notifyDataSetChanged();
 
-                    case "Outgoing Call":
-                        i= new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
-                        i.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE); // Show user only contacts w/ phone numbers
-                        ((Activity)mContext).startActivityForResult(i, 2);
-                        break;
-                    case "Location":
-                        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                        try {
-                            ((Activity)mContext).startActivityForResult(builder.build((Activity)mContext), 3);
-                            Log.d("hello","world");
-                        } catch (GooglePlayServicesRepairableException e) {
-                            e.printStackTrace();
-                        } catch (GooglePlayServicesNotAvailableException e) {
-                            e.printStackTrace();
-                        }
-                       break;
-
-                }
             }
         });
+    }
+    private void fetchData(MyViewHolder holder) {
+        Intent i;
+        switch (holder.title.getText().toString())
+        {
+            case "Time":
+                TimeDialog tobj = new TimeDialog(mContext);
+                AlertDialog tdialog = tobj.create();
+                tdialog.show();
+                break;
+            case "Incoming Call":
+                IncomingCallDialog iobj = new IncomingCallDialog(mContext);
+                iobj.create().show();
+                break;
+
+            case "Outgoing Call" :
+                OutGoingCallDialog oobj = new OutGoingCallDialog(mContext);
+                oobj.create().show();
+                break;
+            case "Location":
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                try {
+                    ((Activity)mContext).startActivityForResult(builder.build((Activity)mContext), 3);
+                    Log.d("hello","world");
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "HeadSet":
+                HeadsetDialog hobj = new HeadsetDialog(mContext);
+                AlertDialog dialog = hobj.create();
+                dialog.show();
+                break;
+            case "Power":
+                PowerDialog pobj = new PowerDialog(mContext);
+                AlertDialog pdialog = pobj.create();
+                pdialog.show();
+                break;
+            case "Bluetooth":
+                BluetoothDialog blobj = new BluetoothDialog(mContext);
+                AlertDialog bldialog = blobj.create();
+                bldialog.show();
+                break;
+            case "Battery":
+                BatteryDialog baobj = new BatteryDialog(mContext);
+                AlertDialog badialog = baobj.create();
+                badialog.show();
+                break;
+        }
     }
 
     /**
@@ -146,13 +177,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
             switch (menuItem.getItemId()) {
                 case R.id.discard_event:
                     Toast.makeText(mContext, "Discard Event" + event.getName(), Toast.LENGTH_SHORT).show();
-                    event.setSelected(false);
-                    notifyDataSetChanged();
                     return true;
                 case R.id.select_event:
                     Toast.makeText(mContext, "Select Event" + event.getName(), Toast.LENGTH_SHORT).show();
-                    event.setSelected(true);
-                    notifyDataSetChanged();
                     return true;
                 default:
             }

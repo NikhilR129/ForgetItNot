@@ -2,8 +2,11 @@ package com.example.nikhilr129.forgetitnot.event;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -17,12 +20,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.nikhilr129.forgetitnot.Fragments.TimePickerFragment;
 import com.example.nikhilr129.forgetitnot.R;
 import com.example.nikhilr129.forgetitnot.action.ActionSelectionActivity;
+import com.example.nikhilr129.forgetitnot.event.eventDialog.IncomingCallDialog;
+import com.example.nikhilr129.forgetitnot.event.eventDialog.OutGoingCallDialog;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
@@ -41,14 +47,8 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
     private List<Event> eventList;
 
     //test done by nikhil
-    private final int SELECT_TIME=1;
-    private final int SELECT_CONTACT=2;
-    private final int SELECT_LOCATION=3;
-    private final int SELECT_HEADSET_STATUS=4;
-    private final int SELECT_BLUTOOTH_STATUS=5;
-    private final int SELECT_BATTERY_STATUS=6;
-    private final int SELECT_POWER_STATUS=7;
 
+    private final int INCOMING_PICK_CONTACT = 1, OUTGOING_PICK_CONTACT= 2, SELECT_LOCATION=3;
 
     HashMap<String,String> hm;
 
@@ -56,16 +56,18 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
        switch(requestCode)
        {
-           case SELECT_TIME:
-               if(resultCode==RESULT_OK) {
-                   //Toast.makeText(this, data.getBundleExtra("Time").toString(), Toast.LENGTH_SHORT).show();
-               }
-               break;
-           case SELECT_CONTACT:
-               if(resultCode==RESULT_OK) {
 
+           case INCOMING_PICK_CONTACT:
+               if(resultCode==RESULT_OK) {
+                    IncomingGetContact(data);
                }
                break;
+           case OUTGOING_PICK_CONTACT:
+               if(resultCode==RESULT_OK) {
+                   IncomingGetContact(data);
+               }
+               break;
+
            case SELECT_LOCATION:
                if(resultCode==RESULT_OK) {
                    Place place = PlacePicker.getPlace(this,data);
@@ -73,30 +75,37 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
                    Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
                }
                break;
-           case SELECT_HEADSET_STATUS:
-               if(resultCode==RESULT_OK) {
-
-               }
-               break;
-           case SELECT_BLUTOOTH_STATUS:
-               if(resultCode==RESULT_OK) {
-
-               }
-               break;
-           case SELECT_BATTERY_STATUS:
-               if(resultCode==RESULT_OK) {
-
-               }
-               break;
-           case SELECT_POWER_STATUS:
-               if(resultCode==RESULT_OK) {
-
-               }
-               break;
-
        }
     }
     //
+    private void IncomingGetContact(Intent data) {
+        Uri contactUri = data.getData();
+        String[] projection = {ContactsContract.CommonDataKinds.Phone.NUMBER};
+        Cursor cursor = getContentResolver()
+                .query(contactUri, projection, null, null, null);
+        cursor.moveToFirst();
+        int column = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+        String number = cursor.getString(column);
+        IncomingCallDialog obj = new IncomingCallDialog(EventSelectionActivity.this);
+        obj.create().show();
+        View v = obj.getView();
+        TextView textView = (TextView) v.findViewById(R.id.event_call_dialog_textView);
+        textView.setText(number);
+    }
+    private void OutGoingGetContact(Intent data) {
+        Uri contactUri = data.getData();
+        String[] projection = {ContactsContract.CommonDataKinds.Phone.NUMBER};
+        Cursor cursor = getContentResolver()
+                .query(contactUri, projection, null, null, null);
+        cursor.moveToFirst();
+        int column = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+        String number = cursor.getString(column);
+        OutGoingCallDialog obj = new OutGoingCallDialog(EventSelectionActivity.this);
+        obj.create().show();
+        View v = obj.getView();
+        TextView textView = (TextView) v.findViewById(R.id.event_call_dialog_textView);
+        textView.setText(number);
+    }
 
     @Override
     public void onDataPass(int data1,int data2) {

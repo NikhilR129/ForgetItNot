@@ -1,4 +1,4 @@
-package com.example.nikhilr129.forgetitnot.action.actionDialog;
+package com.example.nikhilr129.forgetitnot.event.eventDialog;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,18 +10,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.provider.ContactsContract.CommonDataKinds.Phone;
+
 import com.example.nikhilr129.forgetitnot.R;
 
 /**
- * Created by root on 12/4/17.
+ * Created by kanchicoder on 4/16/2017.
  */
 
-public  class MessageDialog {
+public class OutGoingCallDialog {
     private Context context;
     private View viewRoot;
-    private int PICK_CONTACT = 1;
-    public MessageDialog (Context context) {
+    private int PICK_CONTACT = 2;
+    public OutGoingCallDialog (Context context) {
         this.context = context;
     }
     public View getView() {
@@ -30,18 +30,16 @@ public  class MessageDialog {
     public AlertDialog create() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
-        viewRoot = inflater.inflate(R.layout.message_dialog_layout, null);
+        viewRoot = inflater.inflate(R.layout.call_dialog, null);
         Button select = (Button) viewRoot.findViewById(R.id.event_call_dialog_select);
         Button remove = (Button) viewRoot.findViewById(R.id.event_call_dialog_remove);
         final TextView textView = (TextView) viewRoot.findViewById(R.id.event_call_dialog_textView);
-
         builder.setView(viewRoot).
-                setTitle("Fill Details")
+                setTitle("Pick Contact")
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
-
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -54,7 +52,7 @@ public  class MessageDialog {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-                intent.setType(Phone.CONTENT_TYPE);  //should filter only contacts with phone numbers
+                intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);  //should filter only contacts with phone numbers
                 ((Activity)context).startActivityForResult(intent, PICK_CONTACT);
                 if (dialog.isShowing()) {
                     dialog.dismiss();

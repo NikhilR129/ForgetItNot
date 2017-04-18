@@ -3,10 +3,12 @@ package com.example.nikhilr129.forgetitnot.action;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -21,10 +23,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.nikhilr129.forgetitnot.R;
+import com.example.nikhilr129.forgetitnot.action.actionDialog.MessageDialog;
 import com.example.nikhilr129.forgetitnot.action.actionDialog.WallpaperDialog;
 
 import java.io.IOException;
@@ -41,9 +45,46 @@ public class ActionSelectionActivity extends AppCompatActivity{
     private RecyclerView recyclerView;
     private ActionAdapter adapter;
     private List<Action> ActionList;
+    private final int SELECT_PHOTO = 0, PICK_CONTACT = 1;
 
-    //test done by nikhil
-    private final int SELECT_PHOTO = 0;
+
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case SELECT_PHOTO:
+                if(resultCode == RESULT_OK){
+
+                    Uri selectedImage = data.getData();
+                    try {
+                        setImage(selectedImage);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case PICK_CONTACT:
+                    if (resultCode == RESULT_OK) {
+                        getContact(data);
+                    }
+        }
+    }
+
+    private void getContact(Intent data) {
+        Uri contactUri = data.getData();
+        String[] projection = {ContactsContract.CommonDataKinds.Phone.NUMBER};
+        Cursor cursor = getContentResolver()
+                .query(contactUri, projection, null, null, null);
+        cursor.moveToFirst();
+        int column = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+        String number = cursor.getString(column);
+        MessageDialog obj = new MessageDialog(ActionSelectionActivity.this);
+        obj.create().show();
+        View v = obj.getView();
+        TextView textView = (TextView) v.findViewById(R.id.event_call_dialog_textView);
+        textView.setText(number);
+    }
 
     private void setImage(Uri selectedImage) throws IOException {
         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
@@ -53,25 +94,6 @@ public class ActionSelectionActivity extends AppCompatActivity{
         View v = obj.getView();
         ImageView img = (ImageView) v.findViewById(R.id.action_wallpaper_imageview);
         img.setImageBitmap(bitmap);
-    }
-
-
-
-    public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
-        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-        switch(requestCode) {
-            case 0:
-                if(resultCode == RESULT_OK){
-
-                    Uri selectedImage = imageReturnedIntent.getData();
-                    try {
-                        setImage(selectedImage);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-        }
     }
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
