@@ -1,5 +1,7 @@
 package com.example.nikhilr129.forgetitnot.event;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -64,7 +66,7 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
                break;
            case OUTGOING_PICK_CONTACT:
                if(resultCode==RESULT_OK) {
-                   IncomingGetContact(data);
+                   OutGoingGetContact(data);
                }
                break;
 
@@ -73,6 +75,10 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
                    Place place = PlacePicker.getPlace(this,data);
                    String toastMsg = String.format("Place: %s", place.getName());
                    Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+               }
+               else {
+                   eventList.get(3).setSelected();
+                   adapter.notifyDataSetChanged();
                }
                break;
        }
@@ -86,7 +92,7 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
         cursor.moveToFirst();
         int column = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
         String number = cursor.getString(column);
-        IncomingCallDialog obj = new IncomingCallDialog(EventSelectionActivity.this);
+        IncomingCallDialog obj = new IncomingCallDialog(EventSelectionActivity.this, eventList.get(1), adapter);
         obj.create().show();
         View v = obj.getView();
         TextView textView = (TextView) v.findViewById(R.id.event_call_dialog_textView);
@@ -100,8 +106,9 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
         cursor.moveToFirst();
         int column = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
         String number = cursor.getString(column);
-        OutGoingCallDialog obj = new OutGoingCallDialog(EventSelectionActivity.this);
-        obj.create().show();
+        OutGoingCallDialog obj = new OutGoingCallDialog(EventSelectionActivity.this, eventList.get(2), adapter);
+        AlertDialog dialog = obj.create();
+        dialog.show();
         View v = obj.getView();
         TextView textView = (TextView) v.findViewById(R.id.event_call_dialog_textView);
         textView.setText(number);
@@ -283,7 +290,20 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
         switch (item.getItemId()) {
             // action with ID action_refresh was selected
             case R.id.check:
-                startActivity(new Intent(EventSelectionActivity.this, ActionSelectionActivity.class));
+                if(atLeastOneEventSelect())
+                    startActivity(new Intent(EventSelectionActivity.this, ActionSelectionActivity.class));
+                else {
+                    new AlertDialog.Builder(EventSelectionActivity.this)
+                            .setTitle("Error")
+                            .setMessage("Please select at least one Event")
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
+                }
                 break;
             default:
                 break;
@@ -291,4 +311,12 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
 
         return true;
     }
+
+    private boolean atLeastOneEventSelect() {
+        for(int i = 0; i < eventList.size(); ++i) {
+            if(eventList.get(i).getSelected()) return true;
+        }
+        return false;
+    }
+
 }

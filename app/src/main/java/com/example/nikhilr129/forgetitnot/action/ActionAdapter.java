@@ -87,7 +87,7 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.MyViewHold
             public void onClick(View view) {
                 //function used for fetching data
                 if(!action.getSelected())
-                    fetchData(holder);
+                    fetchData(holder, action);
                 action.setSelected();
                 notifyDataSetChanged();
 
@@ -103,43 +103,43 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.MyViewHold
     /**
      * function for fetching data
      */
-    private void fetchData(MyViewHolder holder) {
+    private void fetchData(MyViewHolder holder, Action action) {
         //Toast.makeText(mContext, holder.title.getText(), Toast.LENGTH_SHORT).show();
         if(holder.title.getText() == "Profile"){
-            ProfileDialog obj  = new ProfileDialog(mContext);
+            ProfileDialog obj  = new ProfileDialog(mContext, action, this);
             AlertDialog dialog = obj.create();
             dialog.show();
         }
         else if(holder.title.getText() == "Wifi") {
-            WifiDialog obj  = new WifiDialog(mContext);
+            WifiDialog obj  = new WifiDialog(mContext, action, this);
             AlertDialog dialog = obj.create();
             dialog.show();
         }
         else if(holder.title.getText() == "Speakerphone") {
-            SpeakerDialog obj  = new SpeakerDialog(mContext);
+            SpeakerDialog obj  = new SpeakerDialog(mContext, action, this);
             AlertDialog dialog = obj.create();
             dialog.show();
         }
         else if(holder.title.getText() == "Volume") {
-            VolumeDialog obj  = new VolumeDialog(mContext);
+            VolumeDialog obj  = new VolumeDialog(mContext, action, this);
             AlertDialog dialog = obj.create();
             dialog.show();
         }
         else if(holder.title.getText() == "Notify") {
-            NotifyDialog obj  = new NotifyDialog(mContext);
+            NotifyDialog obj  = new NotifyDialog(mContext, action, this);
             AlertDialog dialog = obj.create();
             dialog.show();
         }
         else if(holder.title.getText() == "Wallpaper") {
-            WallpaperDialog obj = new WallpaperDialog(mContext);
+            WallpaperDialog obj = new WallpaperDialog(mContext, action, this);
             obj.create().show();
         }
         else if(holder.title.getText() == "Load App") {
-            LoadAppDialog obj = new LoadAppDialog(mContext);
+            LoadAppDialog obj = new LoadAppDialog(mContext, action, this);
             obj.create().show();
         }
         else if(holder.title.getText() == "Message") {
-            MessageDialog obj = new MessageDialog(mContext);
+            MessageDialog obj = new MessageDialog(mContext, action, this);
             obj.create().show();
         }
     }

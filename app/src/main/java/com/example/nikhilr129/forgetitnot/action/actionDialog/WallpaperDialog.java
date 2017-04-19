@@ -5,12 +5,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.nikhilr129.forgetitnot.R;
+import com.example.nikhilr129.forgetitnot.action.Action;
+import com.example.nikhilr129.forgetitnot.action.ActionAdapter;
 
 
 /**
@@ -19,9 +22,13 @@ import com.example.nikhilr129.forgetitnot.R;
 public  class WallpaperDialog {
     private Context context;
     private View viewRoot;
+    private Action action;
+    private ActionAdapter adapter;
     private static final int SELECT_PHOTO = 0;
-    public WallpaperDialog (Context context) {
+    public WallpaperDialog (Context context, Action action, ActionAdapter adapter) {
         this.context = context;
+        this.action = action;
+        this.adapter = adapter;
     }
     public View getView() {
         return viewRoot;
@@ -44,6 +51,20 @@ public  class WallpaperDialog {
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
+                        action.setSelected();
+                        adapter.notifyDataSetChanged();
+                    }
+                })
+                .setOnKeyListener(new DialogInterface.OnKeyListener() {
+                    @Override
+                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent e) {
+                        if (keyCode == KeyEvent.KEYCODE_BACK) {
+                            dialog.dismiss();
+                            action.setSelected();
+                            adapter.notifyDataSetChanged();
+                            return true;
+                        }
+                        return false;
                     }
                 });
         final AlertDialog dialog = builder.create();

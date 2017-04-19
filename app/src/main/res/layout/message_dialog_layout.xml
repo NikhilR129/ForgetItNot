@@ -11,13 +11,14 @@
         <RadioButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/action_message_whatsapp"
-            android:text="Whatsapp"/>
+            android:id="@+id/action_message_sms"
+            android:checked="true"
+            android:text="SMS"/>
         <RadioButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/action_message_sms"
-            android:text="SMS"/>
+            android:id="@+id/action_message_whatsapp"
+            android:text="Whatsapp"/>
     </RadioGroup>
 
     <EditText
