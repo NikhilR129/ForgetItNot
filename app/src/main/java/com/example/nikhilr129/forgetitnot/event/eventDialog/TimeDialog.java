@@ -1,22 +1,18 @@
 package com.example.nikhilr129.forgetitnot.event.eventDialog;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.TimePicker;
-import android.widget.Toast;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.nikhilr129.forgetitnot.R;
+import com.example.nikhilr129.forgetitnot.event.Event;
+import com.example.nikhilr129.forgetitnot.event.EventAdapter;
 
 /**
  * Created by kanchicoder on 4/16/2017.
@@ -26,8 +22,12 @@ public class TimeDialog  {
     private boolean already_checked = false;
     private View viewRoot;
     private  Context context;
-    public TimeDialog(Context context) {
+    private  Event event;
+    private  EventAdapter adapter;
+    public TimeDialog(Context context, Event event, EventAdapter adapter) {
         this.context = context;
+        this.event = event;
+        this.adapter = adapter;
     }
     public  AlertDialog create () {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -52,8 +52,22 @@ public class TimeDialog  {
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
+                        event.setSelected();
+                        adapter.notifyDataSetChanged();
                     }
-                });
+                })
+                .setOnKeyListener(new DialogInterface.OnKeyListener() {
+                    @Override
+                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent e) {
+                        if (keyCode == KeyEvent.KEYCODE_BACK) {
+                            dialog.dismiss();
+                            event.setSelected();
+                            adapter.notifyDataSetChanged();
+                            return true;
+                        }
+                        return false;
+                    }
+                });;
 
         ed.setOnClickListener(new View.OnClickListener() {
             @Override

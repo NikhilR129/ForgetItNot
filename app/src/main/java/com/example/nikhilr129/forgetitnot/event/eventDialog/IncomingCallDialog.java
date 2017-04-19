@@ -6,23 +6,31 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.provider.ContactsContract.CommonDataKinds.Phone;
+
 import com.example.nikhilr129.forgetitnot.R;
+import com.example.nikhilr129.forgetitnot.event.Event;
+import com.example.nikhilr129.forgetitnot.event.EventAdapter;
 
 /**
  * Created by kanchicoder on 4/16/2017.
  */
 
 public class IncomingCallDialog {
-    private Context context;
+    private  Context context;
+    private  Event event;
+    private  EventAdapter adapter;
     private View viewRoot;
     private int PICK_CONTACT = 1;
-    public IncomingCallDialog (Context context) {
+    public IncomingCallDialog (Context context, Event event, EventAdapter adapter) {
         this.context = context;
+        this.event = event;
+        this.adapter = adapter;
     }
     public View getView() {
         return viewRoot;
@@ -45,6 +53,20 @@ public class IncomingCallDialog {
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
+                        event.setSelected();
+                        adapter.notifyDataSetChanged();
+                    }
+                })
+                .setOnKeyListener(new DialogInterface.OnKeyListener() {
+                    @Override
+                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent e) {
+                        if (keyCode == KeyEvent.KEYCODE_BACK) {
+                            dialog.dismiss();
+                            event.setSelected();
+                            adapter.notifyDataSetChanged();
+                            return true;
+                        }
+                        return false;
                     }
                 });
         final AlertDialog dialog = builder.create();

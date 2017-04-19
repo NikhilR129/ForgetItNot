@@ -3,7 +3,6 @@ package com.example.nikhilr129.forgetitnot.event;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
@@ -90,29 +89,27 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
             public void onClick(View view) {
                 //function used for fetching data
                 if (!event.getSelected())
-                    fetchData(holder);
+                    fetchData(holder, event);
                 event.setSelected();
                 notifyDataSetChanged();
-
             }
         });
     }
-    private void fetchData(MyViewHolder holder) {
-        Intent i;
+    private void fetchData(MyViewHolder holder, Event event) {
         switch (holder.title.getText().toString())
         {
             case "Time":
-                TimeDialog tobj = new TimeDialog(mContext);
+                TimeDialog tobj = new TimeDialog(mContext, event, this);
                 AlertDialog tdialog = tobj.create();
                 tdialog.show();
                 break;
             case "Incoming Call":
-                IncomingCallDialog iobj = new IncomingCallDialog(mContext);
+                IncomingCallDialog iobj = new IncomingCallDialog(mContext, event, this);
                 iobj.create().show();
                 break;
 
             case "Outgoing Call" :
-                OutGoingCallDialog oobj = new OutGoingCallDialog(mContext);
+                OutGoingCallDialog oobj = new OutGoingCallDialog(mContext, event, this);
                 oobj.create().show();
                 break;
             case "Location":
@@ -127,22 +124,22 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
                 }
                 break;
             case "HeadSet":
-                HeadsetDialog hobj = new HeadsetDialog(mContext);
+                HeadsetDialog hobj = new HeadsetDialog(mContext, event, this);
                 AlertDialog dialog = hobj.create();
                 dialog.show();
                 break;
             case "Power":
-                PowerDialog pobj = new PowerDialog(mContext);
+                PowerDialog pobj = new PowerDialog(mContext, event, this);
                 AlertDialog pdialog = pobj.create();
                 pdialog.show();
                 break;
             case "Bluetooth":
-                BluetoothDialog blobj = new BluetoothDialog(mContext);
+                BluetoothDialog blobj = new BluetoothDialog(mContext, event, this);
                 AlertDialog bldialog = blobj.create();
                 bldialog.show();
                 break;
             case "Battery":
-                BatteryDialog baobj = new BatteryDialog(mContext);
+                BatteryDialog baobj = new BatteryDialog(mContext, event, this);
                 AlertDialog badialog = baobj.create();
                 badialog.show();
                 break;

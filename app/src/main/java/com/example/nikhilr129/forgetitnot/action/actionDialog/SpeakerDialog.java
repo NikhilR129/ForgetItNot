@@ -3,7 +3,11 @@ package com.example.nikhilr129.forgetitnot.action.actionDialog;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.KeyEvent;
 import android.widget.Toast;
+
+import com.example.nikhilr129.forgetitnot.action.Action;
+import com.example.nikhilr129.forgetitnot.action.ActionAdapter;
 
 import java.util.ArrayList;
 
@@ -14,8 +18,12 @@ import java.util.ArrayList;
 
 public  class SpeakerDialog {
     private Context context;
-    public SpeakerDialog(Context context) {
+    private Action action;
+    private ActionAdapter adapter;
+    public SpeakerDialog(Context context, Action action, ActionAdapter adapter) {
         this.context = context;
+        this.action = action;
+        this.adapter = adapter;
     }
 
     public AlertDialog create() {
@@ -47,6 +55,20 @@ public  class SpeakerDialog {
                     public void onClick(DialogInterface dialog, int id) {
                         //  Your code when user clicked on Cancel
                         dialog.dismiss();
+                        action.setSelected();
+                        adapter.notifyDataSetChanged();
+                    }
+                })
+                .setOnKeyListener(new DialogInterface.OnKeyListener() {
+                    @Override
+                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent e) {
+                        if (keyCode == KeyEvent.KEYCODE_BACK) {
+                            dialog.dismiss();
+                            action.setSelected();
+                            adapter.notifyDataSetChanged();
+                            return true;
+                        }
+                        return false;
                     }
                 });
         AlertDialog dialog = builder.create();

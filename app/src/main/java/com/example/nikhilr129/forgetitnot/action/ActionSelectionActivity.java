@@ -1,6 +1,7 @@
 package com.example.nikhilr129.forgetitnot.action;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -24,12 +25,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.nikhilr129.forgetitnot.R;
 import com.example.nikhilr129.forgetitnot.action.actionDialog.MessageDialog;
 import com.example.nikhilr129.forgetitnot.action.actionDialog.WallpaperDialog;
+import com.example.nikhilr129.forgetitnot.main.MainActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,7 +56,6 @@ public class ActionSelectionActivity extends AppCompatActivity{
         switch(requestCode) {
             case SELECT_PHOTO:
                 if(resultCode == RESULT_OK){
-
                     Uri selectedImage = data.getData();
                     try {
                         setImage(selectedImage);
@@ -79,7 +79,7 @@ public class ActionSelectionActivity extends AppCompatActivity{
         cursor.moveToFirst();
         int column = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
         String number = cursor.getString(column);
-        MessageDialog obj = new MessageDialog(ActionSelectionActivity.this);
+        MessageDialog obj = new MessageDialog(ActionSelectionActivity.this, ActionList.get(1), adapter);
         obj.create().show();
         View v = obj.getView();
         TextView textView = (TextView) v.findViewById(R.id.event_call_dialog_textView);
@@ -88,7 +88,7 @@ public class ActionSelectionActivity extends AppCompatActivity{
 
     private void setImage(Uri selectedImage) throws IOException {
         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-        WallpaperDialog obj = new WallpaperDialog(ActionSelectionActivity.this);
+        WallpaperDialog obj = new WallpaperDialog(ActionSelectionActivity.this, ActionList.get(7), adapter);
         AlertDialog dialog = obj.create();
         dialog.show();
         View v = obj.getView();
@@ -204,7 +204,6 @@ public class ActionSelectionActivity extends AppCompatActivity{
 
         adapter.notifyDataSetChanged();
     }
-
     /**
      * RecyclerView item decoration - give equal margin around grid item
      */
@@ -261,8 +260,20 @@ public class ActionSelectionActivity extends AppCompatActivity{
         switch (item.getItemId()) {
             // action with ID action_refresh was selected
             case R.id.check:
-                Toast.makeText(this, "Refresh selected", Toast.LENGTH_SHORT)
-                        .show();
+                if(atLeastOneActionSelect())
+                    startActivity(new Intent(ActionSelectionActivity.this, MainActivity.class));
+                else {
+                    new AlertDialog.Builder(ActionSelectionActivity.this)
+                            .setTitle("Error")
+                            .setMessage("Please select at least one Event")
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
+                }
                 break;
             default:
                 break;
@@ -271,4 +282,10 @@ public class ActionSelectionActivity extends AppCompatActivity{
         return true;
     }
 
+    private boolean atLeastOneActionSelect() {
+        for(int i = 0; i < ActionList.size(); ++i) {
+            if(ActionList.get(i).getSelected()) return true;
+        }
+        return false;
+    }
 }
