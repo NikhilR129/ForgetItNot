@@ -2,7 +2,7 @@
 <resources>
     <string-array name="profiles">
         <item>General</item>
-        <item>Meeting</item>
+        <item>Vibration</item>
         <item>Silent</item>
     </string-array>
     <string-array name="wifi">
