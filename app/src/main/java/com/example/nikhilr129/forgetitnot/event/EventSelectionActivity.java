@@ -74,6 +74,8 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
                if(resultCode==RESULT_OK) {
                    Place place = PlacePicker.getPlace(this,data);
                    String toastMsg = String.format("Place: %s", place.getName());
+                   adapter.data[3][0]=Double.toString(place.getLatLng().latitude);
+                   adapter.data[3][1]=Double.toString(place.getLatLng().longitude);
                    Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
                }
                else {
@@ -97,6 +99,7 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
         View v = obj.getView();
         TextView textView = (TextView) v.findViewById(R.id.event_call_dialog_textView);
         textView.setText(number);
+        adapter.data[1][0]=number;
     }
     private void OutGoingGetContact(Intent data) {
         Uri contactUri = data.getData();
@@ -112,6 +115,7 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
         View v = obj.getView();
         TextView textView = (TextView) v.findViewById(R.id.event_call_dialog_textView);
         textView.setText(number);
+        adapter.data[2][0]=number;
     }
 
     @Override
@@ -314,7 +318,27 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
 
     private boolean atLeastOneEventSelect() {
         for(int i = 0; i < eventList.size(); ++i) {
-            if(eventList.get(i).getSelected()) return true;
+            if(eventList.get(i).getSelected()){
+                Toast.makeText(this, ""+eventList.get(i).getName(), Toast.LENGTH_LONG).show();
+                if(eventList.get(i).getName().equals("Time")){
+                    Toast.makeText(this, ""+adapter.data[0][1], Toast.LENGTH_LONG).show();
+                }else if(eventList.get(i).getName().equals("Incoming Call")){
+                    Toast.makeText(this, ""+adapter.data[1][0], Toast.LENGTH_LONG).show();
+                }else if(eventList.get(i).getName().equals("Outgoing Call")){
+                    Toast.makeText(this, ""+adapter.data[2][0], Toast.LENGTH_LONG).show();
+                }else if(eventList.get(i).getName().equals("Location")){
+                    Toast.makeText(this, ""+adapter.data[3][0]+" "+adapter.data[3][1], Toast.LENGTH_LONG).show();
+                }else if(eventList.get(i).getName().equals("HeadSet")){
+                    Toast.makeText(this, ""+adapter.data[4][0], Toast.LENGTH_LONG).show();
+                }else if(eventList.get(i).getName().equals("Bluetooth")){
+                    Toast.makeText(this, ""+adapter.data[5][0], Toast.LENGTH_LONG).show();
+                }else if(eventList.get(i).getName().equals("Battery")){
+                    Toast.makeText(this, ""+adapter.data[6][0], Toast.LENGTH_LONG).show();
+                }else if(eventList.get(i).getName().equals("Power")){
+                    Toast.makeText(this, ""+adapter.data[7][0], Toast.LENGTH_LONG).show();
+                }
+                return true;
+            }
         }
         return false;
     }

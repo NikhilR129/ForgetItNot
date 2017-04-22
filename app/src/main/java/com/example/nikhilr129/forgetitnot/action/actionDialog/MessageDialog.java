@@ -11,7 +11,9 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nikhilr129.forgetitnot.R;
 import com.example.nikhilr129.forgetitnot.action.Action;
@@ -42,6 +44,7 @@ public  class MessageDialog {
         Button select = (Button) viewRoot.findViewById(R.id.event_call_dialog_select);
         Button remove = (Button) viewRoot.findViewById(R.id.event_call_dialog_remove);
         final TextView textView = (TextView) viewRoot.findViewById(R.id.event_call_dialog_textView);
+        final EditText editText=(EditText)viewRoot.findViewById(R.id.action_message_editText);
 
         builder.setView(viewRoot).
                 setTitle("Fill Details")
@@ -49,12 +52,16 @@ public  class MessageDialog {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
+                        Toast.makeText(context, editText.getText().toString(), Toast.LENGTH_SHORT).show();
+                        adapter.data[1][1]=editText.getText().toString();
 
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
+                        action.setSelected();
+                        adapter.notifyDataSetChanged();
                     }
                 })
                 .setOnKeyListener(new DialogInterface.OnKeyListener() {
@@ -78,8 +85,6 @@ public  class MessageDialog {
                 ((Activity)context).startActivityForResult(intent, PICK_CONTACT);
                 if (dialog.isShowing()) {
                     dialog.dismiss();
-                    action.setSelected();
-                    adapter.notifyDataSetChanged();
                 }
             }
         });

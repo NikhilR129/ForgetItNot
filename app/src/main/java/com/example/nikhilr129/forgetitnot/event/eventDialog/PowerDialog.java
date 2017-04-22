@@ -34,6 +34,7 @@ public class PowerDialog {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         dialog.dismiss();
                         int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
+                        adapter.data[7][0]=String.valueOf(selectedPosition);
                         Toast.makeText(context, String.valueOf(selectedPosition), Toast.LENGTH_SHORT).show();
                     }
                 })
