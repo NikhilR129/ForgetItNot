@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Fade;
@@ -19,7 +18,6 @@ import com.example.nikhilr129.forgetitnot.event.EventSelectionActivity;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabSelectListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,9 +39,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Create and applying action on floating action Menu
         createAndApplyActionOnFloatingActionMenu();
-
-        //create BottomBar and add Tab Click Listener
-        createBottomBarAndClickListener();
     }
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setFadeTransition() {
@@ -67,15 +62,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //TODO something when floating action menu_main first item clicked
                 startActivity(new Intent(MainActivity.this, EventSelectionActivity.class));
-            }
-        });
-    }
-    private void createBottomBarAndClickListener() {
-        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
-        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
-            @Override
-            public void onTabSelected(@IdRes int tabId) {
-
             }
         });
     }
@@ -110,6 +96,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.aboutUs:
                 Toast.makeText(this, "About Us selected", Toast.LENGTH_SHORT)
                         .show();
+                break;
+            case R.id.permissions:
+
                 break;
             default:
                 break;

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "919922054439",
+    "firebase_url": "https://forget-it-21df5.firebaseio.com",
+    "project_id": "forget-it-21df5",
+    "storage_bucket": "forget-it-21df5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:919922054439:android:a82f657307ee9664",
+        "android_client_info": {
+          "package_name": "com.example.nikhilr129.forgetitnot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "919922054439-o86t4sgn15fjr0j1lna32v3sm9to7im8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nikhilr129.forgetitnot",
+            "certificate_hash": "f8bbe2e98188b73516ac2c211077e3c5d0f260ae"
+          }
+        },
+        {
+          "client_id": "919922054439-ar3gk5elqfbusc1bv6nss7hepn514g74.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGAA67Arlsawm5Iv0PuGyo3lSBpkoT_MU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "919922054439-ar3gk5elqfbusc1bv6nss7hepn514g74.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
