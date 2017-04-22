@@ -5,17 +5,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.nikhilr129.forgetitnot.R;
@@ -43,7 +39,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView title;
-        private ImageView thumbnail, overflow;
+        private ImageView thumbnail;
         private CardView cardView;
 
         public MyViewHolder(View view) {
@@ -51,12 +47,11 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
             cardView = (CardView) view.findViewById(R.id.card_view);
             title = (TextView) view.findViewById(R.id.title);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
-            overflow = (ImageView) view.findViewById(R.id.overflow);
         }
     }
 
-
-        public EventAdapter(Context mContext, List<Event> eventList) {
+    //constructor
+    public EventAdapter(Context mContext, List<Event> eventList) {
         this.mContext = mContext;
         this.eventList = eventList;
     }
@@ -88,10 +83,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
             @Override
             public void onClick(View view) {
                 //function used for fetching data
-                if (!event.getSelected())
+                if (!anySelected()) {
                     fetchData(holder, event);
-                event.setSelected();
-                notifyDataSetChanged();
+                    event.setSelected();
+                    notifyDataSetChanged();
+                }
+                else if(event.getSelected()) {
+                    event.setSelected();
+                    notifyDataSetChanged();
+                }
             }
         });
     }
@@ -145,45 +145,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
                 break;
         }
     }
-
-    /**
-     * Showing popup menu_main when tapping on 3 dots
-     */
-    private void showPopupMenu(View view, Event event,MyViewHolder holder) {
-        // inflate menu_main
-        PopupMenu popup = new PopupMenu(mContext, view);
-        MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.menu_event_overflow, popup.getMenu());
-        popup.setOnMenuItemClickListener(new MyMenuItemClickListener(event, holder));
-        popup.show();
-    }
-
-    /**
-     * Click listener for popup menu_main items
-     */
-    class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
-        Event event;
-        MyViewHolder holder;
-        public MyMenuItemClickListener(Event event, MyViewHolder holder) {
-            this.event = event;
-            this.holder =  holder;
+    private boolean anySelected() {
+        for(int i = 0; i < eventList.size(); ++i) {
+            if(eventList.get(i).getSelected()) return true;
         }
-
-        @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-            switch (menuItem.getItemId()) {
-                case R.id.discard_event:
-                    Toast.makeText(mContext, "Discard Event" + event.getName(), Toast.LENGTH_SHORT).show();
-                    return true;
-                case R.id.select_event:
-                    Toast.makeText(mContext, "Select Event" + event.getName(), Toast.LENGTH_SHORT).show();
-                    return true;
-                default:
-            }
-            return false;
-        }
+        return false;
     }
-
     @Override
     public int getItemCount() {
         return eventList.size();

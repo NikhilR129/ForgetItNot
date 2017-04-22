@@ -6,7 +6,7 @@
     <string name="select_event">Select Event</string>
     <string name="discard_action">Discard Action</string>
     <string name="select_action">Select Action</string>
-    <string name="event_backdrop_title">Select The Event[s]</string>
+    <string name="event_backdrop_title">Select a Event</string>
     <string name="action_backdrop_title">Select The Actions[s]</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>

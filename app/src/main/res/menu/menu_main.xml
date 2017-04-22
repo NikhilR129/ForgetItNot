@@ -17,5 +17,8 @@
         android:id="@+id/aboutUs"
         android:title="About Us">
     </item>
-
+    <item
+        android:id="@+id/permissions"
+        android:title="Permissions">
+    </item>
 </menu>
