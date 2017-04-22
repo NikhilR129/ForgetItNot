@@ -77,6 +77,7 @@ public  class LoadAppDialog {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     Toast.makeText(context, packageName[position], Toast.LENGTH_SHORT).show();
+                    adapter.data[4][0]=packageName[position];
                 }
 
                 @Override

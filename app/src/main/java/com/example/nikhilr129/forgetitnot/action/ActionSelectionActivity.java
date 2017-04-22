@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.nikhilr129.forgetitnot.R;
@@ -84,6 +85,7 @@ public class ActionSelectionActivity extends AppCompatActivity{
         View v = obj.getView();
         TextView textView = (TextView) v.findViewById(R.id.event_call_dialog_textView);
         textView.setText(number);
+        adapter.data[1][0]=number;
     }
 
     private void setImage(Uri selectedImage) throws IOException {
@@ -94,6 +96,7 @@ public class ActionSelectionActivity extends AppCompatActivity{
         View v = obj.getView();
         ImageView img = (ImageView) v.findViewById(R.id.action_wallpaper_imageview);
         img.setImageBitmap(bitmap);
+        adapter.data[7][0]=String.valueOf(selectedImage);
     }
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -283,9 +286,30 @@ public class ActionSelectionActivity extends AppCompatActivity{
     }
 
     private boolean atLeastOneActionSelect() {
+        boolean ans=false;
         for(int i = 0; i < ActionList.size(); ++i) {
-            if(ActionList.get(i).getSelected()) return true;
+            if(ActionList.get(i).getSelected()){
+                Toast.makeText(this, ""+ActionList.get(i).getName(), Toast.LENGTH_LONG).show();
+                if(ActionList.get(i).getName().equals("Profile")){
+                    Toast.makeText(this, ""+adapter.data[0][0], Toast.LENGTH_LONG).show();
+                }else if(ActionList.get(i).getName().equals("Message")){
+                    Toast.makeText(this, ""+adapter.data[1][0]+" "+adapter.data[1][1], Toast.LENGTH_LONG).show();
+                }else if(ActionList.get(i).getName().equals("Wifi")){
+                    Toast.makeText(this, ""+adapter.data[2][0], Toast.LENGTH_LONG).show();
+                }else if(ActionList.get(i).getName().equals("Notify")){
+                    Toast.makeText(this, ""+adapter.data[3][0]+" "+adapter.data[3][1], Toast.LENGTH_LONG).show();
+                }else if(ActionList.get(i).getName().equals("Load App")){
+                    Toast.makeText(this, ""+adapter.data[4][0], Toast.LENGTH_LONG).show();
+                }else if(ActionList.get(i).getName().equals("Speakerphone")){
+                    Toast.makeText(this, ""+adapter.data[5][0], Toast.LENGTH_LONG).show();
+                }else if(ActionList.get(i).getName().equals("Volume")){
+                    Toast.makeText(this, ""+adapter.data[6][0]+" "+adapter.data[6][1]+" "+adapter.data[6][2], Toast.LENGTH_LONG).show();
+                }else if(ActionList.get(i).getName().equals("Wallpaper")){
+                    Toast.makeText(this, ""+adapter.data[7][0], Toast.LENGTH_LONG).show();
+                }
+                ans= true;
+            }
         }
-        return false;
+        return ans;
     }
 }

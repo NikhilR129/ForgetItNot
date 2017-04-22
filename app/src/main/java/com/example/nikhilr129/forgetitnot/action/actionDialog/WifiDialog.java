@@ -39,6 +39,7 @@ public  class WifiDialog {
                         dialog.dismiss();
                         int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
                         Toast.makeText(context, String.valueOf(selectedPosition), Toast.LENGTH_SHORT).show();
+                        adapter.data[2][0]=String.valueOf(selectedPosition);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

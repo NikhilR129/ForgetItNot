@@ -14,6 +14,8 @@ import com.example.nikhilr129.forgetitnot.R;
 import com.example.nikhilr129.forgetitnot.event.Event;
 import com.example.nikhilr129.forgetitnot.event.EventAdapter;
 
+import static android.R.attr.data;
+
 /**
  * Created by kanchicoder on 4/16/2017.
  */
@@ -44,6 +46,25 @@ public class TimeDialog  {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
+                        int[] tmp=new int[7];
+                        if(mon.isChecked())
+                            tmp[0]=1;
+                        if(tue.isChecked())
+                            tmp[1]=1;
+                        if(wed.isChecked())
+                            tmp[2]=1;
+                        if(thurs.isChecked())
+                            tmp[3]=1;
+                        if(fri.isChecked())
+                            tmp[4]=1;
+                        if(sat.isChecked())
+                            tmp[5]=1;
+                        if(sun.isChecked())
+                            tmp[6]=1;
+                        adapter.data[0][1]="";
+                        for(int i=0;i<7;i++){
+                            adapter.data[0][1]+=Integer.toString(tmp[i]);
+                        }
                         if(!(mon.isChecked() || tue.isChecked() || wed.isChecked() || thurs.isChecked() ||fri.isChecked() || sat.isChecked() || sun.isChecked())) {
                             Toast.makeText(context, "Please select atleast one day", Toast.LENGTH_SHORT).show();
                         }
@@ -89,6 +110,7 @@ public class TimeDialog  {
                     fri.setClickable(true);
                     sat.setClickable(true);
                     sun.setClickable(true);
+                    adapter.data[0][1]="0000000";
                 }
                 else
                 {
@@ -107,6 +129,7 @@ public class TimeDialog  {
                     fri.setClickable(false);
                     sat.setClickable(false);
                     sun.setClickable(false);
+                    adapter.data[0][1]="1111111";
                 }
 
             }

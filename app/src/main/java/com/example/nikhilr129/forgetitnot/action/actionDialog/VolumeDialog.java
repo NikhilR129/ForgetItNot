@@ -46,6 +46,9 @@ public  class VolumeDialog {
                         int m = media.getProgress();
                         int r = ring.getProgress();
                         Toast.makeText(context, String.valueOf(a) + " " + String.valueOf(m) + " " + String.valueOf(r), Toast.LENGTH_SHORT).show();
+                        adapter.data[6][0]=String.valueOf(a);
+                        adapter.data[6][1]=String.valueOf(m);
+                        adapter.data[6][2]=String.valueOf(r);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

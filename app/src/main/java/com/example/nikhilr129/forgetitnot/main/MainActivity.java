@@ -1,6 +1,7 @@
 package com.example.nikhilr129.forgetitnot.main;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,14 +12,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.nikhilr129.forgetitnot.R;
+import com.example.nikhilr129.forgetitnot.action.actionDialog.LoadAppSpinner.CustomAdapter;
 import com.example.nikhilr129.forgetitnot.event.EventSelectionActivity;
 import com.example.nikhilr129.forgetitnot.service.HelloService;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.roughike.bottombar.BottomBar;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +32,11 @@ public class MainActivity extends AppCompatActivity {
     private  FloatingActionButton floatingActionButton1;
     private  BottomBar  bottomNavigationBar;
     private  Toolbar toolbar;
+
+    ListView lv;
+    Context context;
+
+    public static String [] prgmNameList={"Let Us C","c++","JAVA","Jsp","Microsoft .Net","Android","PHP","Jquery","JavaScript"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +49,11 @@ public class MainActivity extends AppCompatActivity {
             setFadeTransition();
         //Toolbar support in android
         setToolbar();
+
+        context=this;
+
+        lv=(ListView) findViewById(R.id.listView);
+        lv.setAdapter(new TaskCustomAdapter(this, prgmNameList));
 
         //Create and applying action on floating action Menu
         createAndApplyActionOnFloatingActionMenu();
@@ -101,8 +116,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
                 break;
             case R.id.aboutUs:
-                Toast.makeText(this, "About Us selected", Toast.LENGTH_SHORT)
-                        .show();
+                Intent intent = new Intent(this, AboutUs.class);
+                startActivity(intent);
                 break;
             case R.id.permissions:
 

@@ -37,7 +37,10 @@ public  class NotifyDialog {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                         EditText editText = (EditText) viewRoot.findViewById(R.id.action_nofify_editText);
+                        EditText editTextTitle = (EditText) viewRoot.findViewById(R.id.action_nofify_editText_title);
                         Toast.makeText(context, editText.getText(), Toast.LENGTH_SHORT).show();
+                        adapter.data[3][0]=editTextTitle.getText().toString();
+                        adapter.data[3][1]=editText.getText().toString();
                         }
                     })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

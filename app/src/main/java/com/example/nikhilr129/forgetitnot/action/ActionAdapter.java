@@ -35,6 +35,7 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.MyViewHold
 
     private Context mContext;
     private List<Action> ActionList;
+    public String[][] data = new String[8][3];
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView title;
