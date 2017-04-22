@@ -36,7 +36,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
 
     private Context mContext;
     private List<Event> eventList;
-    public String[][] data = new String[8][3];
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView title;
