@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.nikhilr129.forgetitnot.R;
 import com.example.nikhilr129.forgetitnot.event.EventSelectionActivity;
+import com.example.nikhilr129.forgetitnot.service.HelloService;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.roughike.bottombar.BottomBar;
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        startService(new Intent(MainActivity.this,HelloService.class));
+
         //set Slide Transition
         if(Build.VERSION.SDK_INT >= 21)
             setFadeTransition();
@@ -39,6 +42,10 @@ public class MainActivity extends AppCompatActivity {
 
         //Create and applying action on floating action Menu
         createAndApplyActionOnFloatingActionMenu();
+
+
+        //starting service
+
     }
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setFadeTransition() {
