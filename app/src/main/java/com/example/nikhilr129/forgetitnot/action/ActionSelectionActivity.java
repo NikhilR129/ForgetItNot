@@ -340,12 +340,13 @@ public class ActionSelectionActivity extends AppCompatActivity{
                 }else if(ActionList.get(i).getName().equals("Notify")){
                     //Toast.makeText(this, ""+adapter.data[3][0]+" "+adapter.data[3][1], Toast.LENGTH_LONG).show();
                     action.a0=""+adapter.data[3][0];
+                    action.a1=""+adapter.data[3][1];
                 }else if(ActionList.get(i).getName().equals("Load App")){
                     //Toast.makeText(this, ""+adapter.data[4][0], Toast.LENGTH_LONG).show();
                     action.a0=""+adapter.data[4][0];
                 }else if(ActionList.get(i).getName().equals("Speakerphone")){
-                    //Toast.makeText(this, ""+adapter.data[5][0], Toast.LENGTH_LONG).show();
-                    action.a0=""+adapter.data[5][0];
+                    //Toast.makeText(this, ""+1, Toast.LENGTH_LONG).show();
+                    action.a0=""+1;
                 }else if(ActionList.get(i).getName().equals("Volume")){
                     //Toast.makeText(this, ""+adapter.data[6][0]+" "+adapter.data[6][1]+" "+adapter.data[6][2], Toast.LENGTH_LONG).show();
                     action.a0=""+adapter.data[6][0];
