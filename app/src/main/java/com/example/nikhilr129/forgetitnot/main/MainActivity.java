@@ -5,14 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.transition.Fade;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.nikhilr129.forgetitnot.R;
@@ -75,6 +79,14 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.iconsTint));
         toolbar.setSubtitleTextColor(getResources().getColor(R.color.iconsTint));
+        SwitchCompat button = (SwitchCompat) findViewById(R.id.enable_task_switch);
+        button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // do something, the isChecked will be
+                // true if the switch is in the On position
+                Toast.makeText(MainActivity.this, "changed", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     private void createAndApplyActionOnFloatingActionMenu() {
         materialDesignFAM = (FloatingActionMenu) findViewById(R.id.floating_action_menu);
@@ -83,7 +95,8 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //TODO something when floating action menu_main first item clicked
-                startActivity(new Intent(MainActivity.this, EventSelectionActivity.class));
+                TaskName obj = new TaskName(MainActivity.this);
+                obj.create().show();
             }
         });
     }
