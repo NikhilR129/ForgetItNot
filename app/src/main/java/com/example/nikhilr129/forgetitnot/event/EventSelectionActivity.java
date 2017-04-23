@@ -1,8 +1,11 @@
 package com.example.nikhilr129.forgetitnot.event;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Rect;
@@ -11,12 +14,15 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,6 +43,7 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.zip.Inflater;
 
 /**
  * Created by kanchicoder on 4/10/17.
@@ -45,11 +52,14 @@ import java.util.List;
 public class EventSelectionActivity extends AppCompatActivity implements TimePickerFragment.OnDataPass {
     String title;
     String event;
+    private int MY_PERMISSION_REQUEST_LOCATION=50;
     String a0,a1,a2,a3,a4,a5;
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private EventAdapter adapter;
     private List<Event> eventList;
+    LayoutInflater  inflater;
+    private View viewRoot;
 
     //test done by nikhil
 
@@ -74,17 +84,42 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
                 break;
 
             case SELECT_LOCATION:
-                if(resultCode==RESULT_OK) {
-                    Place place = PlacePicker.getPlace(this,data);
-                    String toastMsg = String.format("Place: %s", place.getName());
-                    adapter.data[3][0]=Double.toString(place.getLatLng().latitude);
-                    adapter.data[3][1]=Double.toString(place.getLatLng().longitude);
-                    Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    if(resultCode==RESULT_OK) {
+                        Place place = PlacePicker.getPlace(this,data);
+                        String toastMsg = String.format("Place: %s", place.getName());
+                        adapter.data[3][0]=Double.toString(place.getLatLng().latitude);
+                        adapter.data[3][1]=Double.toString(place.getLatLng().longitude);
+                        Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+
+                    }
+                    else {
+                        eventList.get(3).setSelected();
+                        adapter.notifyDataSetChanged();
+                    }
+
+                } else {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CONTACTS)) {
+                        Snackbar.make(viewRoot,
+                                "Needs Location permission",
+                                Snackbar.LENGTH_INDEFINITE).setAction("ENABLE",
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if (ActivityCompat.checkSelfPermission(EventSelectionActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                                            ActivityCompat.requestPermissions(EventSelectionActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},MY_PERMISSION_REQUEST_LOCATION);
+                                        if (ActivityCompat.checkSelfPermission(EventSelectionActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                                            ActivityCompat.requestPermissions(EventSelectionActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},MY_PERMISSION_REQUEST_LOCATION);
+                                    }
+                                }).show();
+                    }else{
+                        if (ActivityCompat.checkSelfPermission(EventSelectionActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                            ActivityCompat.requestPermissions(EventSelectionActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},MY_PERMISSION_REQUEST_LOCATION);
+                        if (ActivityCompat.checkSelfPermission(EventSelectionActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                            ActivityCompat.requestPermissions(EventSelectionActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},MY_PERMISSION_REQUEST_LOCATION);
+                    }
                 }
-                else {
-                    eventList.get(3).setSelected();
-                    adapter.notifyDataSetChanged();
-                }
+
                 break;
         }
     }
@@ -133,6 +168,8 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
         setToolbar();
         initCollapsingToolbar();
         //initiate hasmap;
+        inflater = LayoutInflater.from(this);
+        viewRoot = inflater.inflate(R.layout.message_dialog_layout, null);
         hm=new HashMap<>();
 
         Intent intent=getIntent();
@@ -332,7 +369,7 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
         for(int i = 0; i < eventList.size(); ++i) {
             if(eventList.get(i).getSelected()){
                 event=eventList.get(i).getName();
-                Toast.makeText(this, ""+eventList.get(i).getName(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, ""+eventList.get(i).getName(), Toast.LENGTH_LONG).show();
                 if(eventList.get(i).getName().equals("Time")){
                     //Toast.makeText(this, ""+adapter.data[0][1], Toast.LENGTH_LONG).show();
                     a1=""+adapter.data[0][1];
