@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
@@ -16,18 +15,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.nikhilr129.forgetitnot.R;
-import com.example.nikhilr129.forgetitnot.action.actionDialog.LoadAppSpinner.CustomAdapter;
-import com.example.nikhilr129.forgetitnot.event.EventSelectionActivity;
 import com.example.nikhilr129.forgetitnot.service.HelloService;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.roughike.bottombar.BottomBar;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,13 +40,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        startService(new Intent(MainActivity.this,HelloService.class));
 
         //set Slide Transition
         if(Build.VERSION.SDK_INT >= 21)
             setFadeTransition();
         //Toolbar support in android
         setToolbar();
+
+        SwitchCompat s=(SwitchCompat)findViewById(R.id.enable_task_switch);
+        s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b)
+                {
+                    startService(new Intent(MainActivity.this,HelloService.class));
+                }
+                else
+                {
+                    stopService(new Intent(MainActivity.this,HelloService.class));
+
+                }
+            }
+        });
 
         context=this;
 

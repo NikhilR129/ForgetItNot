@@ -77,7 +77,7 @@ public class HelloService extends Service {
         registerReceiver(receiver,new IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION));
 
 
-        Toast.makeText(this, "started", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Service started", Toast.LENGTH_SHORT).show();
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -127,6 +127,8 @@ public class HelloService extends Service {
         super.onDestroy();
         if(receiver!=null)
             unregisterReceiver(receiver);
-        Toast.makeText(this, "stopping", Toast.LENGTH_SHORT).show();
+        if(phonecallreceiver!=null)
+            unregisterReceiver(phonecallreceiver);
+        Toast.makeText(this, "Service stopped", Toast.LENGTH_SHORT).show();
     }
 }
