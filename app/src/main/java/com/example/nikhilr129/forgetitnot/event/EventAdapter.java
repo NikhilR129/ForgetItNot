@@ -3,7 +3,10 @@ package com.example.nikhilr129.forgetitnot.event;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,6 +28,15 @@ import com.example.nikhilr129.forgetitnot.event.eventDialog.TimeDialog;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 
 import java.util.List;
 
@@ -36,7 +48,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
 
     private Context mContext;
     private List<Event> eventList;
-
+    private GoogleMap mMap;
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView title;
         private ImageView thumbnail;
@@ -51,6 +63,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
     }
 
     //constructor
+
     public EventAdapter(Context mContext, List<Event> eventList) {
         this.mContext = mContext;
         this.eventList = eventList;

@@ -94,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
                 break;
             case R.id.aboutUs:
-                Toast.makeText(this, "About Us selected", Toast.LENGTH_SHORT)
-                        .show();
+                Intent intent = new Intent(this, AboutUs.class);
+                startActivity(intent);
                 break;
             case R.id.permissions:
 

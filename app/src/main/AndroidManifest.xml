@@ -35,6 +35,7 @@
         <!-- Event Selection Activity -->
         <activity android:name=".event.EventSelectionActivity" />
         <!-- Action Selection Activity -->
+        <activity android:name=".main.AboutUs"/>
         <activity android:name=".action.ActionSelectionActivity" />
         <activity android:name=".Helpers.ContactPickerActivity" />
     </application>

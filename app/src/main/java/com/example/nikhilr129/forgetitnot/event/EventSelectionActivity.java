@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,7 +25,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.graphics.*;
 import com.bumptech.glide.Glide;
 import com.example.nikhilr129.forgetitnot.Fragments.TimePickerFragment;
 import com.example.nikhilr129.forgetitnot.R;
@@ -33,6 +34,10 @@ import com.example.nikhilr129.forgetitnot.event.eventDialog.IncomingCallDialog;
 import com.example.nikhilr129.forgetitnot.event.eventDialog.OutGoingCallDialog;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +61,7 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-       switch(requestCode)
+        switch(requestCode)
        {
 
            case INCOMING_PICK_CONTACT:
@@ -74,6 +79,7 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
                if(resultCode==RESULT_OK) {
                    Place place = PlacePicker.getPlace(this,data);
                    String toastMsg = String.format("Place: %s", place.getName());
+                   toastMsg = toastMsg + place.getLatLng();
                    Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
                }
                else {
@@ -83,7 +89,7 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
                break;
        }
     }
-    //
+
     private void IncomingGetContact(Intent data) {
         Uri contactUri = data.getData();
         String[] projection = {ContactsContract.CommonDataKinds.Phone.NUMBER};
