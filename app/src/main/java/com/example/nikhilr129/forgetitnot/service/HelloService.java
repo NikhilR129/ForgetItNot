@@ -4,21 +4,14 @@ package com.example.nikhilr129.forgetitnot.service;
  * Created by nikhilr129 on 19/4/17.
  */
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
-
-import com.example.nikhilr129.forgetitnot.R;
-import com.example.nikhilr129.forgetitnot.main.MainActivity;
 
 import io.realm.Realm;
 
@@ -88,7 +81,9 @@ public class HelloService extends Service {
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String event=intent.getStringExtra("event");
+
+
+        /*String event=intent.getStringExtra("event");
         if(event!=null)
         {
             //final RealmResults<Task> tasks= realm.where(Task.class).findAll();
@@ -115,7 +110,7 @@ public class HelloService extends Service {
 // mId allows you to update the notification later on.
             mNotificationManager.notify(123, mBuilder.build());
 
-        }
+        }*/
         return START_STICKY;
     }
 

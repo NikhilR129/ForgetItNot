@@ -2,6 +2,7 @@ package com.example.nikhilr129.forgetitnot.ActionHandlers;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.app.NotificationManager;
 import android.app.WallpaperManager;
 import android.content.Context;
@@ -11,9 +12,13 @@ import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.Build;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.NotificationCompat;
+import android.telephony.SmsManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.nikhilr129.forgetitnot.R;
@@ -23,7 +28,7 @@ import java.io.IOException;
 import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
- * Created by nikhilr129 on 22/4/17.
+ * Created by kanchicoder on 4/19/2017.
  */
 
 public class PerformAction {
@@ -32,7 +37,7 @@ public class PerformAction {
     public  PerformAction(Context context) {
         this.context = context;
     }
-    public void performWifiAction(String option) {
+    public void performWifiAction(String option) {   //working fine
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         if(option.equals("0")){
             wifiManager.setWifiEnabled(true);
@@ -49,7 +54,7 @@ public class PerformAction {
                 wifiManager.setWifiEnabled(true);
         }
     }
-    public void performProfileAction(String option) {
+    public void performProfileAction(String option) {  //working on redmi
         AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         if(option.equals("0")){
             audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
@@ -80,7 +85,7 @@ public class PerformAction {
         }
     }
 
-    public void performNotifyAppAction(String message) {
+    public void performNotifyAppAction(String message) { //working fine
         NotificationCompat.Builder mBuilder =
                 (NotificationCompat.Builder) new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.action_coverpage)
@@ -101,23 +106,53 @@ public class PerformAction {
                     new String[]{Manifest.permission.SEND_SMS},
                     MY_PERMISSIONS_REQUEST_SEND_SMS);
         }
-        //send sms
-//        if(i == 0) {
-//            try {
-//                SmsManager smsManager = SmsManager.getDefault();
-//                smsManager.sendTextMessage(phoneNo, null, message, null, null);
-//                Toast.makeText(context.getApplicationContext(), "Message Sent",
-//                        Toast.LENGTH_LONG).show();
-//            } catch (Exception ex) {
-//                Toast.makeText(context.getApplicationContext(), ex.getMessage().toString(),
-//                        Toast.LENGTH_LONG).show();
-//                ex.printStackTrace();
-//            }
-//        }
-        Uri uri = Uri.parse("smsto:" + "8563985494");
-        Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
-        intent.putExtra("sms_body", "my message");
-        intent.setPackage("com.whatsapp");
-        context.startActivity(intent);
+        //   send sms
+        if(i == 0) {
+            try {
+                SmsManager smsManager = SmsManager.getDefault();
+                smsManager.sendTextMessage(phoneNo, null, message, null, null);
+                Toast.makeText(context.getApplicationContext(), "Message Sent",
+                        Toast.LENGTH_LONG).show();
+            } catch (Exception ex) {
+                Toast.makeText(context.getApplicationContext(), ex.getMessage().toString(),
+                        Toast.LENGTH_LONG).show();
+                ex.printStackTrace();
+            }
+        }
+    }
+    public void peformSpeakerPhoneAction() {
+        AudioManager audioManager =  (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setMode(AudioManager.MODE_IN_CALL);
+        audioManager.setSpeakerphoneOn(true);
+        Log.v("entered","entered");
+    }
+    public void performVolumeAction(int media, int ring, int alarm) {
+        AudioManager audioManager = (AudioManager)context.getSystemService(context.AUDIO_SERVICE);
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int) (1.5*media), 0);
+        audioManager.setStreamVolume(AudioManager.STREAM_ALARM, (int) (1.5*alarm), 0);
+        audioManager.setStreamVolume(AudioManager.STREAM_RING, (int) (1.5*ring), 0);
+    }
+
+
+    public void performDownloadAction(String url) {
+        if (ContextCompat.checkSelfPermission(context,Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) context,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    1);
+        }
+        // Here, thisActivity is the current activity
+        Toast.makeText(context, url, Toast.LENGTH_SHORT).show();
+        final String[] separated = url.split("/");
+        final String myFile = separated[separated.length - 1];
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+        request.setDescription("Some description");
+        request.setTitle("Some title");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            request.allowScanningByMediaScanner();
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        }
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, myFile);
+        DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        manager.enqueue(request);
     }
 }
