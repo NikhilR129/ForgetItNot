@@ -14,10 +14,7 @@ public class Task extends RealmObject {
     public String title;
     public Event event;
     public RealmList<Action> actions;
-    public String a0;
-    public String a1;
-    public String a2;
-    public String a3;
+
 
     public Task()
     {

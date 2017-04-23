@@ -8,9 +8,11 @@ import android.net.wifi.WifiManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.nikhilr129.forgetitnot.Models.Action;
 import com.example.nikhilr129.forgetitnot.Models.Task;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 /**
@@ -31,13 +33,32 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
         realm=Realm.getDefaultInstance();
 
         if (isInitialStickyBroadcast()) {
-            //Log.d(TAG,intent.getAction());
-            // Ignore this call to onReceive, as this is the sticky broadcast
-            Log.d(TAG,"received sticky broadcast"+intent.getAction());
+            //ignore this broadcast
         } else {
+            //remove this from here
+            Realm.init(context);
+            Realm realm=Realm.getDefaultInstance();
+            RealmResults<Task> rl=realm.where(Task.class).findAll();
+            for(int i=0;i<rl.size();i++)
+            {
+                Task task=rl.get(i);
+                Log.d(TAG,task.id+" "+task.title);
+                Log.d(TAG,task.event.type+" "+task.event.a0+" "+task.event.a1+" "+task.event.a2+" "+task.event.a3);
+                RealmList<Action> actions=task.actions;
+                for(int j=0;j<actions.size();j++)
+                {
+                    Action a=actions.get(j);
+                    Log.d(TAG,a.type+" "+a.a0+" "+a.a1+" "+a.a2+" "+a.a3);
+                }
+            }
+
+            realm.beginTransaction();
+            rl.deleteAllFromRealm();
+            realm.commitTransaction();
+
             // Connectivity state has changed
             String condition=intent.getAction();
-            RealmResults rl;
+
 
             //this one gets printed in log first,others inside switch block
             //Log.d(TAG,condition);
