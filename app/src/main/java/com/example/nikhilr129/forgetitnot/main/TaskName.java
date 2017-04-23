@@ -29,7 +29,7 @@ public  class TaskName {
 
     public AlertDialog create() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        LayoutInflater inflater = LayoutInflater.from(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
         final View viewRoot = inflater.inflate(R.layout.task_name, null);
         final EditText editText = (EditText) viewRoot.findViewById(R.id.main_task_name);
         builder.setView(viewRoot)
@@ -38,7 +38,9 @@ public  class TaskName {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                         if(editText.getText().toString().length() > 0) {
-                            context.startActivity(new Intent(context, EventSelectionActivity.class));
+                            Intent intent=new Intent(context, EventSelectionActivity.class);
+                            intent.putExtra("TITLE", editText.getText().toString());
+                            context.startActivity(intent);
                         }
                         }
                     })
