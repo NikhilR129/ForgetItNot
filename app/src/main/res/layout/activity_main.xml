@@ -11,19 +11,7 @@
         <include layout="@layout/tool_bar"
             android:id="@+id/activity_main_toolbar" />
 
-        <!-- Nested Scroll View -->
-        <android.support.v4.widget.NestedScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
-        </android.support.v4.widget.NestedScrollView>
-
-        <ListView
-            android:layout_marginTop="60dp"
-            android:id="@+id/listView"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
-        </ListView>
+        <include layout="@layout/main_content_main" />
 
         <!--floating action menu_main Begins here-->
         <com.github.clans.fab.FloatingActionMenu
