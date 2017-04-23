@@ -35,7 +35,6 @@ public  class ProfileDialog {
                    public void onClick(DialogInterface dialog, int whichButton) {
                        dialog.dismiss();
                        int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
-                       Toast.makeText(context, String.valueOf(selectedPosition), Toast.LENGTH_SHORT).show();
                        adapter.data[0][0]=String.valueOf(selectedPosition);
                    }
                })

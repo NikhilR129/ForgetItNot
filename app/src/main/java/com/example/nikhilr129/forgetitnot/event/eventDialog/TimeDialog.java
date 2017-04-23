@@ -67,6 +67,8 @@ public class TimeDialog  {
                         }
                         if(!(mon.isChecked() || tue.isChecked() || wed.isChecked() || thurs.isChecked() ||fri.isChecked() || sat.isChecked() || sun.isChecked())) {
                             Toast.makeText(context, "Please select atleast one day", Toast.LENGTH_SHORT).show();
+                            event.setSelected();
+                            adapter.notifyDataSetChanged();
                         }
                     }
                 })

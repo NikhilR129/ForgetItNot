@@ -52,8 +52,12 @@ public  class MessageDialog {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
-                        Toast.makeText(context, editText.getText().toString(), Toast.LENGTH_SHORT).show();
                         adapter.data[1][1]=editText.getText().toString();
+                        if(textView.getText().length() == 0 && editText.getText().length() == 0) {
+                            action.setSelected();
+                            adapter.notifyDataSetChanged();
+                            Toast.makeText(context, "Please fill all details", Toast.LENGTH_SHORT).show();
+                        }
 
                     }
                 })

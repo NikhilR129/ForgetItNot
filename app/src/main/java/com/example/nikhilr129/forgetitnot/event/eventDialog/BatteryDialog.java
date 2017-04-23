@@ -35,7 +35,6 @@ public class BatteryDialog {
                         dialog.dismiss();
                         int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
                         adapter.data[6][0]=String.valueOf(selectedPosition);
-                        Toast.makeText(context, String.valueOf(selectedPosition), Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

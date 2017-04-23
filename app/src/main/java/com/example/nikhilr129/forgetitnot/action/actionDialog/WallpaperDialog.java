@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.nikhilr129.forgetitnot.R;
 import com.example.nikhilr129.forgetitnot.action.Action;
@@ -46,6 +47,11 @@ public  class WallpaperDialog {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                        dialog.dismiss();
+                        if(imageView.getDrawable() == null) {
+                            action.setSelected();
+                            adapter.notifyDataSetChanged();
+                            Toast.makeText(context, "Please select image", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
