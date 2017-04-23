@@ -11,9 +11,13 @@ import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.example.nikhilr129.forgetitnot.Models.Task;
+
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 
 public class HelloService extends Service {
@@ -111,6 +115,11 @@ public class HelloService extends Service {
             mNotificationManager.notify(123, mBuilder.build());
 
         }*/
+        Realm.init(this);
+        Realm realm=Realm.getDefaultInstance();
+        RealmResults<Task> rl=realm.where(Task.class).findAll();
+        Log.d("abcdefg",""+rl.size());
+
         return START_STICKY;
     }
 

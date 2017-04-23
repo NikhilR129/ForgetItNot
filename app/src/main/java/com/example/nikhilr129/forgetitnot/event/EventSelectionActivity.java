@@ -43,6 +43,9 @@ import java.util.List;
  */
 
 public class EventSelectionActivity extends AppCompatActivity implements TimePickerFragment.OnDataPass {
+    String title;
+    String event;
+    String a0,a1,a2,a3,a4,a5;
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private EventAdapter adapter;
@@ -294,9 +297,15 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
         switch (item.getItemId()) {
             // action with ID action_refresh was selected
             case R.id.check:
-                if(atLeastOneEventSelect())
-                    startActivity(new Intent(EventSelectionActivity.this, ActionSelectionActivity.class));
-                else {
+                if(atLeastOneEventSelect()) {
+                    Intent intent = new Intent(EventSelectionActivity.this, ActionSelectionActivity.class);
+                    intent.putExtra("TASK_TITLE", title);
+                    intent.putExtra("EVENT_NAME", event);
+                    intent.putExtra("E0", a0);
+                    intent.putExtra("E1", a1);
+                    intent.putExtra("E2", a2);
+                    startActivity(intent);
+                }else {
                     new AlertDialog.Builder(EventSelectionActivity.this)
                             .setTitle("Error")
                             .setMessage("Please select at least one Event")
@@ -319,25 +328,36 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
     private boolean atLeastOneEventSelect() {
         for(int i = 0; i < eventList.size(); ++i) {
             if(eventList.get(i).getSelected()){
+                event=eventList.get(i).getName();
                 Toast.makeText(this, ""+eventList.get(i).getName(), Toast.LENGTH_LONG).show();
                 if(eventList.get(i).getName().equals("Time")){
-                    Toast.makeText(this, ""+adapter.data[0][1], Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, ""+adapter.data[0][1], Toast.LENGTH_LONG).show();
+                    a1=""+adapter.data[0][1];
                 }else if(eventList.get(i).getName().equals("Incoming Call")){
-                    Toast.makeText(this, ""+adapter.data[1][0], Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, ""+adapter.data[1][0], Toast.LENGTH_LONG).show();
+                    a0=""+adapter.data[1][0];
                 }else if(eventList.get(i).getName().equals("Outgoing Call")){
-                    Toast.makeText(this, ""+adapter.data[2][0], Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, ""+adapter.data[2][0], Toast.LENGTH_LONG).show();
+                    a0=""+adapter.data[2][0];
                 }else if(eventList.get(i).getName().equals("Location")){
-                    Toast.makeText(this, ""+adapter.data[3][0]+" "+adapter.data[3][1], Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, ""+adapter.data[3][0]+" "+adapter.data[3][1], Toast.LENGTH_LONG).show();
+                    a0=""+adapter.data[3][0];
+                    a1=""+adapter.data[3][1];
                 }else if(eventList.get(i).getName().equals("HeadSet")){
-                    Toast.makeText(this, ""+adapter.data[4][0], Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, ""+adapter.data[4][0], Toast.LENGTH_LONG).show();
+                    a0=""+adapter.data[4][0];
                 }else if(eventList.get(i).getName().equals("Bluetooth")){
-                    Toast.makeText(this, ""+adapter.data[5][0], Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, ""+adapter.data[5][0], Toast.LENGTH_LONG).show();
+                    a0=""+adapter.data[5][0];
                 }else if(eventList.get(i).getName().equals("Battery")){
-                    Toast.makeText(this, ""+adapter.data[6][0], Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, ""+adapter.data[6][0], Toast.LENGTH_LONG).show();
+                    a0=""+adapter.data[6][0];
                 }else if(eventList.get(i).getName().equals("Power")){
-                    Toast.makeText(this, ""+adapter.data[7][0], Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, ""+adapter.data[7][0], Toast.LENGTH_LONG).show();
+                    a0=""+adapter.data[7][0];
                 }
                 return true;
+
             }
         }
         return false;

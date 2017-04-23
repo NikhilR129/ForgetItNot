@@ -1,11 +1,13 @@
 package com.example.nikhilr129.forgetitnot.action;
 
+import io.realm.RealmModel;
+
 /**
  * Created by kanchicoder on 4/12/17.
  */
 
 
-public class Action {
+public class Action implements RealmModel {
     private String name;
     private int thumbnail;
     private boolean isSelected;
