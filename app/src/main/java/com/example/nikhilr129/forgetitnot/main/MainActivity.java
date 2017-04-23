@@ -1,6 +1,7 @@
 package com.example.nikhilr129.forgetitnot.main;
 
 import android.annotation.TargetApi;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -44,6 +45,15 @@ public class MainActivity extends AppCompatActivity {
     private List<Task> taskList;
     private  FloatingActionMenu materialDesignFAM;
     Context context;
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,21 +65,6 @@ public class MainActivity extends AppCompatActivity {
         //Toolbar support in android
         setToolbar();
 
-        SwitchCompat s=(SwitchCompat)findViewById(R.id.enable_task_switch);
-        s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b)
-                {
-                    startService(new Intent(MainActivity.this,HelloService.class));
-                }
-                else
-                {
-                    stopService(new Intent(MainActivity.this,HelloService.class));
-
-                }
-            }
-        });
 
         context=this;
 
@@ -199,14 +194,24 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.iconsTint));
         toolbar.setSubtitleTextColor(getResources().getColor(R.color.iconsTint));
-        SwitchCompat button = (SwitchCompat) findViewById(R.id.enable_task_switch);
-        button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // do something, the isChecked will be
-                // true if the switch is in the On position
-                Toast.makeText(MainActivity.this, "changed", Toast.LENGTH_SHORT).show();
+        SwitchCompat s=(SwitchCompat)findViewById(R.id.enable_task_switch);
+        if(isMyServiceRunning(HelloService.class))
+            s.setChecked(true);
+        s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b)
+                {
+                    startService(new Intent(MainActivity.this,HelloService.class));
+                }
+                else
+                {
+                    stopService(new Intent(MainActivity.this,HelloService.class));
+
+                }
             }
         });
+
     }
     private void createAndApplyActionOnFloatingActionMenu() {
         materialDesignFAM = (FloatingActionMenu) findViewById(R.id.floating_action_menu);
