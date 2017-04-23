@@ -34,7 +34,7 @@ import java.util.List;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder> {
 
-    private Context mContext;
+    private EventSelectionActivity mContext;
     private List<Event> eventList;
     public String[][] data = new String[8][3];
 
@@ -52,7 +52,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
     }
 
     //constructor
-    public EventAdapter(Context mContext, List<Event> eventList) {
+    public EventAdapter(EventSelectionActivity mContext, List<Event> eventList) {
         this.mContext = mContext;
         this.eventList = eventList;
     }

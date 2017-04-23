@@ -33,7 +33,7 @@ import java.util.List;
 
 public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.MyViewHolder> {
 
-    private Context mContext;
+    private ActionSelectionActivity mContext;
     private List<Action> ActionList;
     public String[][] data = new String[8][3];
 
@@ -51,7 +51,7 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.MyViewHold
     }
 
 
-    public ActionAdapter(Context mContext, List<Action> ActionList) {
+    public ActionAdapter(ActionSelectionActivity mContext, List<Action> ActionList) {
         this.mContext = mContext;
         this.ActionList = ActionList;
     }
