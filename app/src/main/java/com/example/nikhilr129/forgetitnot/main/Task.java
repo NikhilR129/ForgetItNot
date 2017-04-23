@@ -16,7 +16,10 @@ public class Task implements RealmModel {
         this.id=id;
         this.thumbnail = thumbnail;
     }
-
+    public long getId()
+    {
+        return id;
+    }
     public String getTitle() {
         return title;
     }
