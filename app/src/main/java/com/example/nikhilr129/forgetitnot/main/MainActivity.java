@@ -1,52 +1,63 @@
 package com.example.nikhilr129.forgetitnot.main;
 
 import android.annotation.TargetApi;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.transition.Fade;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.nikhilr129.forgetitnot.R;
-import com.example.nikhilr129.forgetitnot.action.actionDialog.LoadAppSpinner.CustomAdapter;
-import com.example.nikhilr129.forgetitnot.event.EventSelectionActivity;
 import com.example.nikhilr129.forgetitnot.service.HelloService;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.roughike.bottombar.BottomBar;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
+
 
 public class MainActivity extends AppCompatActivity {
-
-
-    private  FloatingActionMenu materialDesignFAM;
     private  FloatingActionButton floatingActionButton1;
     private  BottomBar  bottomNavigationBar;
     private  Toolbar toolbar;
-
-    ListView lv;
+    private RecyclerView recyclerView;
+    private TaskAdapter adapter;
+    private List<Task> taskList;
+    private  FloatingActionMenu materialDesignFAM;
     Context context;
-
-    public static String [] prgmNameList={"Let Us C","c++","JAVA","Jsp","Microsoft .Net","Android","PHP","Jquery","JavaScript"};
-
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        startService(new Intent(MainActivity.this,HelloService.class));
 
         //set Slide Transition
         if(Build.VERSION.SDK_INT >= 21)
@@ -54,18 +65,116 @@ public class MainActivity extends AppCompatActivity {
         //Toolbar support in android
         setToolbar();
 
+
         context=this;
 
-        lv=(ListView) findViewById(R.id.listView);
-        lv.setAdapter(new TaskCustomAdapter(this, prgmNameList));
+
+        recyclerView = (RecyclerView) findViewById(R.id.main_recycler_view);
+
+        taskList = new ArrayList<>();
+        adapter = new TaskAdapter(this, taskList);
+
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.addItemDecoration(new MainActivity.GridSpacingItemDecoration(2, dpToPx(10), true));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+        prepareTasks();
 
         //Create and applying action on floating action Menu
         createAndApplyActionOnFloatingActionMenu();
 
-
-        //starting service
-
     }
+    /**
+     * RecyclerView item decoration - give equal margin around grid item
+     */
+    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+
+        private int spanCount;
+        private int spacing;
+        private boolean includeEdge;
+
+        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
+            this.spanCount = spanCount;
+            this.spacing = spacing;
+            this.includeEdge = includeEdge;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            int position = parent.getChildAdapterPosition(view); // item position
+            int column = position % spanCount; // item column
+
+            if (includeEdge) {
+                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
+                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
+
+                if (position < spanCount) { // top edge
+                    outRect.top = spacing;
+                }
+                outRect.bottom = spacing; // item bottom
+            } else {
+                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
+                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+                if (position >= spanCount) {
+                    outRect.top = spacing; // item top
+                }
+            }
+        }
+    }
+
+    private int returnDrawable(String type)
+    {
+        switch(type)
+        {
+            case "Time":
+                return R.drawable.time;
+            case "Incoming Call":
+                return R.drawable.incoming;
+            case "Outgoing Call":
+                return R.drawable.outgoing;
+            case "Location":
+                return R.drawable.location;
+            case "Bluetooth":
+                return R.drawable.bluetooth;
+            case "Battery":
+                return R.drawable.battery;
+            case "Power":
+                return R.drawable.power;
+            case "HeadSet":
+                return R.drawable.headset;
+            default:
+                return R.drawable.bell;
+        }
+    }
+    private void prepareTasks() {
+        int[] covers = new int[]{
+                R.drawable.time,
+                R.drawable.incoming,
+                R.drawable.outgoing,
+                R.drawable.location,
+                R.drawable.headset,
+                R.drawable.bluetooth,
+                R.drawable.battery,
+                R.drawable.power
+        };
+        Task a;
+        Realm.init(this);
+        Realm realm=Realm.getDefaultInstance();
+        RealmResults<com.example.nikhilr129.forgetitnot.Models.Task> rl=realm.where(com.example.nikhilr129.forgetitnot.Models.Task.class).findAll();
+        for(int i=0;i<rl.size();i++)
+        {
+            com.example.nikhilr129.forgetitnot.Models.Task t=rl.get(i);
+            String title=t.title;
+            String event_type=t.event.type;
+            long id = t.id;
+            a=new Task(title,id,event_type,returnDrawable(event_type));
+            taskList.add(a);
+        }
+
+        adapter.notifyDataSetChanged();
+    }
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setFadeTransition() {
         Fade s = new Fade();
@@ -73,20 +182,36 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setEnterTransition(s);
 
     }
-
+    /**
+     * Converting dp to pixel
+     */
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
     private void setToolbar() {
         toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.iconsTint));
         toolbar.setSubtitleTextColor(getResources().getColor(R.color.iconsTint));
-        SwitchCompat button = (SwitchCompat) findViewById(R.id.enable_task_switch);
-        button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // do something, the isChecked will be
-                // true if the switch is in the On position
-                Toast.makeText(MainActivity.this, "changed", Toast.LENGTH_SHORT).show();
+        SwitchCompat s=(SwitchCompat)findViewById(R.id.enable_task_switch);
+        if(isMyServiceRunning(HelloService.class))
+            s.setChecked(true);
+        s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b)
+                {
+                    startService(new Intent(MainActivity.this,HelloService.class));
+                }
+                else
+                {
+                    stopService(new Intent(MainActivity.this,HelloService.class));
+
+                }
             }
         });
+
     }
     private void createAndApplyActionOnFloatingActionMenu() {
         materialDesignFAM = (FloatingActionMenu) findViewById(R.id.floating_action_menu);
