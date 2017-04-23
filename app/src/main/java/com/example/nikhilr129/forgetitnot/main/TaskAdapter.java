@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.nikhilr129.forgetitnot.R;
-import com.google.android.gms.vision.text.Text;
 
 import java.util.List;
 
@@ -75,6 +74,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
                 realm.commitTransaction();
                 taskList.remove(position);
                 notifyDataSetChanged();
+            }
+        });
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActionDialog obj = new ActionDialog(mContext, taskList.get(position));
+                obj.create().show();
             }
         });
         // loading task cover using Glide library

@@ -80,6 +80,21 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
         // loading event cover using Glide library
         Glide.with(mContext).load(event.getThumbnail()).into(holder.thumbnail);
 
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //function used for fetching data
+                if (!anySelected()) {
+                    fetchData(holder, event);
+                    event.setSelected();
+                    notifyDataSetChanged();
+                }
+                else if(event.getSelected()) {
+                    event.setSelected();
+                    notifyDataSetChanged();
+                }
+            }
+        });
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

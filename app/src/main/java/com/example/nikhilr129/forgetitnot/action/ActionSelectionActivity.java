@@ -279,8 +279,10 @@ public class ActionSelectionActivity extends AppCompatActivity{
         switch (item.getItemId()) {
             // action with ID action_refresh was selected
             case R.id.check:
-                if(atLeastOneActionSelect())
+                if(atLeastOneActionSelect()) {
                     startActivity(new Intent(ActionSelectionActivity.this, MainActivity.class));
+                    finish();
+                }
                 else {
                     new AlertDialog.Builder(ActionSelectionActivity.this)
                             .setTitle("Error")

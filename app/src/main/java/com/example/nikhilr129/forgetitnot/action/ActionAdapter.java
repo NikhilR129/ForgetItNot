@@ -78,6 +78,17 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.MyViewHold
         }
         // loading Action cover using Glide library
         Glide.with(mContext).load(action.getThumbnail()).into(holder.thumbnail);
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //function used for fetching data
+                if(!action.getSelected())
+                    fetchData(holder, action);
+                action.setSelected();
+                notifyDataSetChanged();
+
+            }
+        });
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
