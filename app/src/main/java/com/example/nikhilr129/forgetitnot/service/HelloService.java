@@ -11,13 +11,9 @@ import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import android.os.IBinder;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.example.nikhilr129.forgetitnot.Models.Task;
-
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 
 public class HelloService extends Service {
@@ -81,7 +77,7 @@ public class HelloService extends Service {
         registerReceiver(receiver,new IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION));
 
 
-        Toast.makeText(this, "started", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Service started", Toast.LENGTH_SHORT).show();
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -115,10 +111,7 @@ public class HelloService extends Service {
             mNotificationManager.notify(123, mBuilder.build());
 
         }*/
-        Realm.init(this);
-        Realm realm=Realm.getDefaultInstance();
-        RealmResults<Task> rl=realm.where(Task.class).findAll();
-        Log.d("abcdefg",""+rl.size());
+
 
         return START_STICKY;
     }
@@ -134,6 +127,8 @@ public class HelloService extends Service {
         super.onDestroy();
         if(receiver!=null)
             unregisterReceiver(receiver);
-        Toast.makeText(this, "stopping", Toast.LENGTH_SHORT).show();
+        if(phonecallreceiver!=null)
+            unregisterReceiver(phonecallreceiver);
+        Toast.makeText(this, "Service stopped", Toast.LENGTH_SHORT).show();
     }
 }

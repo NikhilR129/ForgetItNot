@@ -34,6 +34,7 @@ import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
+
 public class MainActivity extends AppCompatActivity {
     private  FloatingActionButton floatingActionButton1;
     private  BottomBar  bottomNavigationBar;
@@ -47,13 +48,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        startService(new Intent(MainActivity.this,HelloService.class));
 
         //set Slide Transition
         if(Build.VERSION.SDK_INT >= 21)
             setFadeTransition();
         //Toolbar support in android
         setToolbar();
+
+        SwitchCompat s=(SwitchCompat)findViewById(R.id.enable_task_switch);
+        s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b)
+                {
+                    startService(new Intent(MainActivity.this,HelloService.class));
+                }
+                else
+                {
+                    stopService(new Intent(MainActivity.this,HelloService.class));
+
+                }
+            }
+        });
 
         context=this;
 
