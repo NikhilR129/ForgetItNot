@@ -88,7 +88,7 @@ public class IncomingCallDialog {
                 if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
                     Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
                     intent.setType(Phone.CONTENT_TYPE);  //should filter only contacts with phone numbers
-                    ((Activity)context).startActivityForResult(intent, PICK_CONTACT);
+                    (context).startActivityForResult(intent, PICK_CONTACT);
                     if (dialog.isShowing()) {
                         dialog.dismiss();
                     }
@@ -100,11 +100,13 @@ public class IncomingCallDialog {
                                 new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.READ_CONTACTS},MY_PERMISSION_REQUEST_READ_CONTACTS);
+                                        if(ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
+                                            ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.READ_CONTACTS},MY_PERMISSION_REQUEST_READ_CONTACTS);
                                     }
                                 }).show();
                     }else{
-                        ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.READ_CONTACTS},MY_PERMISSION_REQUEST_READ_CONTACTS);
+                        if(ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
+                            ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.READ_CONTACTS},MY_PERMISSION_REQUEST_READ_CONTACTS);
                     }
                 }
 
