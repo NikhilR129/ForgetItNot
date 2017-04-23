@@ -28,11 +28,6 @@ import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 
-
-/**
- * Created by root on 12/4/17.
- */
-
 public  class ActionDialog {
     private Context context;
     private  Task task;
@@ -101,6 +96,17 @@ public  class ActionDialog {
             case "Wallpaper":
                 ImageView img = new ImageView(context);
                 Bitmap bitmap = null;
+                // Here, thisActivity is the current activity
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions((Activity) context,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            2);
+                }
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(a[0]));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 img.setImageBitmap(bitmap);
                 layout.addView(img);
                 img.requestLayout();
