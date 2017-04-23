@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nikhilr129.forgetitnot.R;
 import com.example.nikhilr129.forgetitnot.event.Event;
@@ -48,6 +49,11 @@ public class IncomingCallDialog {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
+                        if(textView.getText().length() == 0) {
+                            event.setSelected();
+                            adapter.notifyDataSetChanged();
+                            Toast.makeText(context, "Please pick contact", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

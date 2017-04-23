@@ -4,8 +4,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.KeyEvent;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.nikhilr129.forgetitnot.R;
 import com.example.nikhilr129.forgetitnot.action.Action;
 import com.example.nikhilr129.forgetitnot.action.ActionAdapter;
 
@@ -46,8 +48,10 @@ public  class SpeakerDialog {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
-                        for(int i = 0; i < seletedItems.size(); ++i) {
-                            Toast.makeText(context, seletedItems.get(i).toString(), Toast.LENGTH_SHORT).show();
+                        if(seletedItems.size() == 0) {
+                            action.setSelected();
+                            adapter.notifyDataSetChanged();
+                            Toast.makeText(context, "Please Select the option", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

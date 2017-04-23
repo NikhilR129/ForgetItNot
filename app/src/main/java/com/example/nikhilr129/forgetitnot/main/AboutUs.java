@@ -20,7 +20,7 @@ import com.google.android.gms.vision.text.Text;
  * Created by sugreev on 23/4/17.
  */
 
-class AboutUs extends AppCompatActivity {
+public class AboutUs extends AppCompatActivity {
 
 
 

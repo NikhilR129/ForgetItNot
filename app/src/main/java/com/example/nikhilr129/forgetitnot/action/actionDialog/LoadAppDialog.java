@@ -76,7 +76,6 @@ public  class LoadAppDialog {
             spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    Toast.makeText(context, packageName[position], Toast.LENGTH_SHORT).show();
                     adapter.data[4][0]=packageName[position];
                 }
 
