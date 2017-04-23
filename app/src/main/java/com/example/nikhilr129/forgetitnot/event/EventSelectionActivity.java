@@ -135,6 +135,9 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
         //initiate hasmap;
         hm=new HashMap<>();
 
+        Intent intent=getIntent();
+        title=intent.getStringExtra("TITLE");
+
         recyclerView = (RecyclerView) findViewById(R.id.event_recycler_view);
 
         eventList = new ArrayList<>();

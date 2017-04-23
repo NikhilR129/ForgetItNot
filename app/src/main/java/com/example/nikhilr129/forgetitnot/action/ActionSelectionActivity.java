@@ -302,7 +302,6 @@ public class ActionSelectionActivity extends AppCompatActivity{
     }
     public long getNextKey(final Class<? extends RealmObject> clazz) {
         Number nextID =  (realm.where(clazz).max("id"));
-        Log.d("abcdef",nextID+"");
         if(nextID!=null)
             return nextID.longValue()+1;
         return 0;
@@ -325,7 +324,7 @@ public class ActionSelectionActivity extends AppCompatActivity{
         RealmList<com.example.nikhilr129.forgetitnot.Models.Action> actions=new RealmList<>();
         for(int i = 0; i < ActionList.size(); ++i) {
             if(ActionList.get(i).getSelected()){
-                Toast.makeText(this, ""+ActionList.get(i).getName(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, ""+ActionList.get(i).getName(), Toast.LENGTH_LONG).show();
                 com.example.nikhilr129.forgetitnot.Models.Action action=new com.example.nikhilr129.forgetitnot.Models.Action();
                 action.type=""+ActionList.get(i).getName();
                 if(ActionList.get(i).getName().equals("Profile")){
