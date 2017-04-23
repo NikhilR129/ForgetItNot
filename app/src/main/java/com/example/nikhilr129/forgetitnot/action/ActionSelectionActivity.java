@@ -18,6 +18,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +29,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.nikhilr129.forgetitnot.Models.Event;
+import com.example.nikhilr129.forgetitnot.Models.Task;
 import com.example.nikhilr129.forgetitnot.R;
 import com.example.nikhilr129.forgetitnot.action.actionDialog.MessageDialog;
 import com.example.nikhilr129.forgetitnot.action.actionDialog.WallpaperDialog;
@@ -36,6 +39,11 @@ import com.example.nikhilr129.forgetitnot.main.MainActivity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
+
+import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmObject;
 
 /**
  * Created by kanchicoder on 4/10/17.
@@ -47,7 +55,9 @@ public class ActionSelectionActivity extends AppCompatActivity{
     private RecyclerView recyclerView;
     private ActionAdapter adapter;
     private List<Action> ActionList;
+    Realm realm;
     private final int SELECT_PHOTO = 0, PICK_CONTACT = 1;
+    String title, eventName, actionName, e0, e1, e2, a0, a1, a2;
 
 
 
@@ -101,6 +111,12 @@ public class ActionSelectionActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.action_activity_main);
+        Intent intent=getIntent();
+        eventName=intent.getStringExtra("EVENT_NAME");
+        title=intent.getStringExtra("TASK_TITLE");
+        e0=intent.getStringExtra("E0");
+        e1=intent.getStringExtra("E1");
+        e2=intent.getStringExtra("E2");
         setToolbar();
         initCollapsingToolbar();
 
@@ -284,32 +300,70 @@ public class ActionSelectionActivity extends AppCompatActivity{
 
         return true;
     }
+    public long getNextKey(final Class<? extends RealmObject> clazz) {
+        Number nextID =  (realm.where(clazz).max("id"));
+        Log.d("abcdef",nextID+"");
+        if(nextID!=null)
+            return nextID.longValue()+1;
+        return 0;
+
+    }
 
     private boolean atLeastOneActionSelect() {
         boolean ans=false;
+        Realm.init(ActionSelectionActivity.this);
+        realm=Realm.getDefaultInstance();
+        Task task=new Task();
+        task.id=getNextKey(Task.class);
+        task.title=title;
+        Event event=new Event();
+        event.type=eventName;
+        event.a0=e0;
+        event.a1=e1;
+        event.a2=e2;
+        task.event=event;
+        RealmList<com.example.nikhilr129.forgetitnot.Models.Action> actions=new RealmList<>();
         for(int i = 0; i < ActionList.size(); ++i) {
             if(ActionList.get(i).getSelected()){
                 Toast.makeText(this, ""+ActionList.get(i).getName(), Toast.LENGTH_LONG).show();
+                com.example.nikhilr129.forgetitnot.Models.Action action=new com.example.nikhilr129.forgetitnot.Models.Action();
+                action.type=""+ActionList.get(i).getName();
                 if(ActionList.get(i).getName().equals("Profile")){
-                    Toast.makeText(this, ""+adapter.data[0][0], Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, ""+adapter.data[0][0], Toast.LENGTH_LONG).show();
+                    action.a0=""+adapter.data[0][0];
                 }else if(ActionList.get(i).getName().equals("Message")){
-                    Toast.makeText(this, ""+adapter.data[1][0]+" "+adapter.data[1][1], Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, ""+adapter.data[1][0]+" "+adapter.data[1][1], Toast.LENGTH_LONG).show();
+                    action.a0=""+adapter.data[1][0];
+                    action.a1=""+adapter.data[1][1];
                 }else if(ActionList.get(i).getName().equals("Wifi")){
-                    Toast.makeText(this, ""+adapter.data[2][0], Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, ""+adapter.data[2][0], Toast.LENGTH_LONG).show();
+                    action.a0=""+adapter.data[2][0];
                 }else if(ActionList.get(i).getName().equals("Notify")){
-                    Toast.makeText(this, ""+adapter.data[3][0]+" "+adapter.data[3][1], Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, ""+adapter.data[3][0]+" "+adapter.data[3][1], Toast.LENGTH_LONG).show();
+                    action.a0=""+adapter.data[3][0];
                 }else if(ActionList.get(i).getName().equals("Load App")){
-                    Toast.makeText(this, ""+adapter.data[4][0], Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, ""+adapter.data[4][0], Toast.LENGTH_LONG).show();
+                    action.a0=""+adapter.data[4][0];
                 }else if(ActionList.get(i).getName().equals("Speakerphone")){
-                    Toast.makeText(this, ""+adapter.data[5][0], Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, ""+adapter.data[5][0], Toast.LENGTH_LONG).show();
+                    action.a0=""+adapter.data[5][0];
                 }else if(ActionList.get(i).getName().equals("Volume")){
-                    Toast.makeText(this, ""+adapter.data[6][0]+" "+adapter.data[6][1]+" "+adapter.data[6][2], Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, ""+adapter.data[6][0]+" "+adapter.data[6][1]+" "+adapter.data[6][2], Toast.LENGTH_LONG).show();
+                    action.a0=""+adapter.data[6][0];
+                    action.a1=""+adapter.data[6][1];
+                    action.a2=""+adapter.data[6][2];
                 }else if(ActionList.get(i).getName().equals("Wallpaper")){
-                    Toast.makeText(this, ""+adapter.data[7][0], Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, ""+adapter.data[7][0], Toast.LENGTH_LONG).show();
+                    action.a0=""+adapter.data[7][0];
                 }
+                actions.add(action);
                 ans= true;
             }
         }
+        task.actions=actions;
+        realm.beginTransaction();
+        realm.copyToRealm(task);
+        realm.commitTransaction();
         return ans;
     }
 }
