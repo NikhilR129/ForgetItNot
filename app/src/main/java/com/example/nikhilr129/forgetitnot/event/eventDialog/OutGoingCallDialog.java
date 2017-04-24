@@ -1,11 +1,15 @@
 package com.example.nikhilr129.forgetitnot.event.eventDialog;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.provider.ContactsContract;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,18 +20,20 @@ import android.widget.Toast;
 import com.example.nikhilr129.forgetitnot.R;
 import com.example.nikhilr129.forgetitnot.event.Event;
 import com.example.nikhilr129.forgetitnot.event.EventAdapter;
+import com.example.nikhilr129.forgetitnot.event.EventSelectionActivity;
 
 /**
  * Created by kanchicoder on 4/16/2017.
  */
 
 public class OutGoingCallDialog {
-    private  Context context;
+    private EventSelectionActivity context;
     private  Event event;
     private  EventAdapter adapter;
+    private int MY_PERMISSION_REQUEST_READ_CONTACTS=20;
     private View viewRoot;
     private int PICK_CONTACT = 2;
-    public OutGoingCallDialog (Context context, Event event, EventAdapter adapter) {
+    public OutGoingCallDialog (EventSelectionActivity context, Event event, EventAdapter adapter) {
         this.context = context;
         this.event = event;
         this.adapter = adapter;
@@ -79,12 +85,31 @@ public class OutGoingCallDialog {
         select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-                intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);  //should filter only contacts with phone numbers
-                ((Activity)context).startActivityForResult(intent, PICK_CONTACT);
-                if (dialog.isShowing()) {
-                    dialog.dismiss();
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                    intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);  //should filter only contacts with phone numbers
+                    (context).startActivityForResult(intent, PICK_CONTACT);
+                    if (dialog.isShowing()) {
+                        dialog.dismiss();
+                    }
+                } else {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(context, Manifest.permission.READ_CONTACTS)) {
+                        Snackbar.make(viewRoot,
+                                "Needs Contacts read permission",
+                                Snackbar.LENGTH_INDEFINITE).setAction("ENABLE",
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if(ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
+                                            ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.READ_CONTACTS},MY_PERMISSION_REQUEST_READ_CONTACTS);
+                                    }
+                                }).show();
+                    }else{
+                        if(ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
+                            ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.READ_CONTACTS},MY_PERMISSION_REQUEST_READ_CONTACTS);
+                    }
                 }
+
             }
         });
         remove.setOnClickListener(new View.OnClickListener() {

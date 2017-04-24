@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <include layout="@layout/call_dialog" />
     <EditText
         android:id="@+id/action_message_editText"
         android:layout_width="match_parent"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:layout_height="wrap_content"
         android:hint="Set MESSAGE" />
-    <include layout="@layout/call_dialog" />
 </LinearLayout>

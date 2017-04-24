@@ -34,7 +34,7 @@ import java.util.List;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder> {
 
-    private Context mContext;
+    private EventSelectionActivity mContext;
     private List<Event> eventList;
     public String[][] data = new String[8][3];
 
@@ -52,7 +52,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
     }
 
     //constructor
-    public EventAdapter(Context mContext, List<Event> eventList) {
+    public EventAdapter(EventSelectionActivity mContext, List<Event> eventList) {
         this.mContext = mContext;
         this.eventList = eventList;
     }
@@ -80,6 +80,21 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
         // loading event cover using Glide library
         Glide.with(mContext).load(event.getThumbnail()).into(holder.thumbnail);
 
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //function used for fetching data
+                if (!anySelected()) {
+                    fetchData(holder, event);
+                    event.setSelected();
+                    notifyDataSetChanged();
+                }
+                else if(event.getSelected()) {
+                    event.setSelected();
+                    notifyDataSetChanged();
+                }
+            }
+        });
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
