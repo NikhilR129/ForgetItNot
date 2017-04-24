@@ -26,6 +26,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     String htextview_version = "0.1.1"
+    compile 'com.karumi:dexter:4.1.0'
     compile "com.hanks:htextview-base:$htextview_version"    // base library
     compile "com.hanks:htextview-line:$htextview_version"        // optional
     compile 'com.github.clans:fab:1.6.4'

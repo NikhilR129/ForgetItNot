@@ -203,7 +203,8 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b)
                 {
-                    startService(new Intent(MainActivity.this,HelloService.class));
+                            startService(new Intent(MainActivity.this,HelloService.class));
+
                 }
                 else
                 {

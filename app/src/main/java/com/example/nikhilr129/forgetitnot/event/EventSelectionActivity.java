@@ -1,7 +1,6 @@
 package com.example.nikhilr129.forgetitnot.event;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,6 +20,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -43,7 +43,6 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.zip.Inflater;
 
 /**
  * Created by kanchicoder on 4/10/17.
@@ -374,11 +373,17 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
                     //Toast.makeText(this, ""+adapter.data[0][1], Toast.LENGTH_LONG).show();
                     a1=""+adapter.data[0][1];
                 }else if(eventList.get(i).getName().equals("Incoming Call")){
-                    //Toast.makeText(this, ""+adapter.data[1][0], Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, ""+adapter.data[1][0], Toast.LENGTH_LONG).show()
                     a0=""+adapter.data[1][0];
+                    a0=a0.replaceAll("\\s+","");
+                    if(a0.length()>=10)
+                    a0="+91"+a0.substring(a0.length()-10);
+                    Log.d("trimmed",a0);
                 }else if(eventList.get(i).getName().equals("Outgoing Call")){
                     //Toast.makeText(this, ""+adapter.data[2][0], Toast.LENGTH_LONG).show();
                     a0=""+adapter.data[2][0];
+                    a0=a0.replaceAll("\\s+","");
+                    Log.d("trimmed",a0);
                 }else if(eventList.get(i).getName().equals("Location")){
                     //Toast.makeText(this, ""+adapter.data[3][0]+" "+adapter.data[3][1], Toast.LENGTH_LONG).show();
                     a0=""+adapter.data[3][0];
