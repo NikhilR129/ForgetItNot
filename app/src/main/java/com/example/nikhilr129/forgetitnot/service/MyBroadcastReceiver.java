@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.BatteryManager;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
@@ -26,12 +27,9 @@ import io.realm.RealmResults;
  */
 
 public class MyBroadcastReceiver extends BroadcastReceiver {
+
     private static final String TAG = "MyBroadcastReceiver";
     Realm realm;
-    PerformAction taskperformer;
-    public MyBroadcastReceiver()
-    {
-    }
 
     void perform(Context context,String type,String a0,String a1,String a2,String a3)
     {
@@ -48,9 +46,9 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
                 performer.performWifiAction(a0);
                 break;
             case "Notify":
-                performer.performNotifyAppAction(a0);
+                performer.performNotifyAppAction(a0,a1);
                 break;
-            case "LoadApp":
+            case "Load App":
                 performer.performLoadAppAction(a0);
                 break;
             case "Speakerphone":
@@ -72,129 +70,118 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
         }
     }
+
+    public void run_query(Context context,Realm realm,String type,String value)
+    {
+        RealmResults<Task> rl=realm.where(Task.class).equalTo("event.type",type).equalTo("event.a0",value).findAll();
+        for(int x=0;x<rl.size();x++)
+        {
+            Log.d(TAG,rl.get(x).title);
+            RealmList<Action> actions=rl.get(x).actions;
+            for(int y=0;y<actions.size();y++)
+            {
+                Action a=actions.get(y);
+                perform(context,a.type,a.a0,a.a1,a.a2,a.a3);
+            }
+        }
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
         Realm.init(context);
         realm=Realm.getDefaultInstance();
+        Log.d(TAG,intent.getAction());
+        context.startService(new Intent(context,HelloService.class));
 
         if (isInitialStickyBroadcast()) {
             //ignore this broadcast
         } else {
-            taskperformer=new PerformAction(context);
             Realm.init(context);
             Realm realm=Realm.getDefaultInstance();
             RealmResults<Task> rl;
             // Connectivity state has changed
             String condition=intent.getAction();
 
-            Intent i=new Intent(context,HelloService.class);
             switch(condition)
             {
                 case "android.intent.action.HEADSET_PLUG":   //fine
-                    i.putExtra("event","headset");
+
                     if(intent.getIntExtra("state",-1)==1)
                     {
-                        i.putExtra("type","plugged");
-                        rl=realm.where(Task.class).equalTo("event.type","HeadSet").equalTo("event.a0","0").findAll();
-                        for(int x=0;x<rl.size();x++)
-                        {
-                            Log.d(TAG,rl.get(x).title);
-                            RealmList<Action> actions=rl.get(x).actions;
-                            for(int y=0;y<actions.size();y++)
-                            {
-                                Action a=actions.get(y);
-                                perform(context,a.type,a.a0,a.a1,a.a2,a.a3);
-                            }
-                        }
+                        run_query(context,realm,"HeadSet","0");
                         Log.d(TAG,"headset plugged");
                     }
                     if(intent.getIntExtra("state",-1)==0)
                     {
-                        i.putExtra("type","unplugged");
-                        rl=realm.where(Task.class).equalTo("event.type","HeadSet").equalTo("event.a0","1").findAll();
-                        for(int x=0;x<rl.size();x++)
-                        {
-                            Log.d(TAG,rl.get(x).title);
-                        }
+                        run_query(context,realm,"HeadSet","1");
                         Log.d(TAG,"headset unplugged");
                     }
                     break;
 
 
                 case "android.intent.action.ACTION_POWER_CONNECTED": //check again
-                    i.putExtra("event","power");
-                    i.putExtra("type","connected");
-                    rl=realm.where(Task.class).equalTo("event.type","Power").equalTo("event.a0","0").findAll();
-                    for(int x=0;x<rl.size();x++)
-                    {
-                        Log.d(TAG,rl.get(x).title);
-                    }
+                    run_query(context,realm,"Power","0");
+                    Log.d(TAG,"power connected");
                     break;
 
 
                 case "android.intent.action.ACTION_POWER_DISCONNECTED":  //check again
-                    i.putExtra("event","power");
-                    i.putExtra("type","disconnected");
-                    rl=realm.where(Task.class).equalTo("event.type","Power").equalTo("event.a0","1").findAll();
-                    for(int x=0;x<rl.size();x++)
-                    {
-                        Log.d(TAG,rl.get(x).title);
-                    }
+                    run_query(context,realm,"Power","1");
+                    Log.d(TAG,"power disconnected");
                     break;
 
 
                 case "android.bluetooth.adapter.action.STATE_CHANGED":  //fine
-                    i.putExtra("event","bluetooth");
                     final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
                             BluetoothAdapter.ERROR);
                     if(state== BluetoothAdapter.STATE_TURNING_ON)
                     {
-                        i.putExtra("type","connected");
-                        rl = realm.where(Task.class).equalTo("event.type", "Bluetooth").equalTo("event.a0", "0").findAll();
-                        for(int x=0;x<rl.size();x++)
-                        {
-                            Log.d(TAG,rl.get(x).title);
-                        }
+                        run_query(context,realm,"Bluetooth","0");
                         Log.d(TAG,"bluetooth turned on");
                     }
                     else if(state== BluetoothAdapter.STATE_TURNING_OFF)
                     {
-                        i.putExtra("type","disconnected");
-                        rl = realm.where(Task.class).equalTo("event.type", "Bluetooth").equalTo("event.a0", "1").findAll();
-                        for(int x=0;x<rl.size();x++)
-                        {
-                            Log.d(TAG,rl.get(x).title);
-                        }
+                        run_query(context,realm,"Bluetooth","1");
                         Log.d(TAG,"bluetooth turned off");
                     }
                     break;
 
 
+                case "android.intent.action.BATTERY_CHANGED":
+                    int status=intent.getIntExtra(BatteryManager.EXTRA_STATUS,-1);
+                    if(status==BatteryManager.BATTERY_STATUS_FULL)
+                    {
+                        run_query(context,realm,"Battery","0");
+                        Log.d(TAG,"battery full");
+                    }
+                    int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+                    int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+                    float batteryPct = (level / (float)scale)*100;
+
+                    if(batteryPct<=20)
+                    {
+                        run_query(context,realm,"Battery","1");
+                        Log.d(TAG,"<20%");
+
+                    }
+                    break;
+
+
+
                 case "android.net.wifi.WIFI_STATE_CHANGED":  //fine
                     int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, -1);
                     if (WifiManager.WIFI_STATE_ENABLED == wifiState) {
-                        rl = realm.where(Task.class).equalTo("event.type", "Wifi").equalTo("event.a0", "0").findAll();
-                        for(int x=0;x<rl.size();x++)
-                        {
-                            Log.d(TAG,rl.get(x).title);
-                        }
+                        run_query(context,realm,"Wifi","0");
                         Log.d(TAG,"wifi enabled");
                     }
                     else if(WifiManager.WIFI_STATE_DISABLING == wifiState)
                     {
-                        rl = realm.where(Task.class).equalTo("event.type", "Wifi").equalTo("event.a0", "0").findAll();
-                        for(int x=0;x<rl.size();x++)
-                        {
-                            Log.d(TAG,rl.get(x).title);
-                        }
+                        run_query(context,realm,"Wifi","1");
                         Log.d(TAG,"wifi disabled");
                     }
+                    break;
             }
-
-            //not starting service,broadcast receiver taking care of actions
-           // Log.d(TAG,i.getStringExtra("event"+i.getStringExtra("type")));
-            //context.startService(i);
         }
 
     }

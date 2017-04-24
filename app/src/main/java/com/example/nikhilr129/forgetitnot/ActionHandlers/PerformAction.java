@@ -77,6 +77,7 @@ public class PerformAction {
     }
 
     public void performLoadAppAction(String packageName) {
+        Log.v("My",packageName);
         Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
         if (launchIntent != null) {
             context.startActivity(launchIntent);
@@ -85,15 +86,15 @@ public class PerformAction {
         }
     }
 
-    public void performNotifyAppAction(String message) { //working fine
+    public void performNotifyAppAction(String title,String message) { //working fine
         NotificationCompat.Builder mBuilder =
                 (NotificationCompat.Builder) new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.action_coverpage)
-                        .setContentTitle("Urgent")
+                        .setContentTitle(title)
                         .setContentText(message);
 
         // Sets an ID for the notification
-        int mNotificationId = 001;
+        int mNotificationId = 101;
         // Gets an instance of the NotificationManager service
         NotificationManager mNotifyMgr = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         // Builds the notification and issues it.
@@ -101,11 +102,6 @@ public class PerformAction {
     }
     public void performMessageAppAction(int i, String phoneNo, String message) {
         // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(context,Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) context,
-                    new String[]{Manifest.permission.SEND_SMS},
-                    MY_PERMISSIONS_REQUEST_SEND_SMS);
-        }
         //   send sms
         if(i == 0) {
             try {

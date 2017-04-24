@@ -5,6 +5,7 @@
         <item>Vibration</item>
         <item>Silent</item>
     </string-array>
+
     <string-array name="wifi">
         <item>On</item>
         <item>Off</item>

@@ -4,52 +4,68 @@ package com.example.nikhilr129.forgetitnot.service;
  * Created by nikhilr129 on 19/4/17.
  */
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import android.os.IBinder;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.widget.Toast;
 
-import io.realm.Realm;
+import com.example.nikhilr129.forgetitnot.R;
+import com.example.nikhilr129.forgetitnot.main.MainActivity;
 
+class MyPhoneStateListener extends PhoneStateListener {
+
+    @Override
+    public void onCallStateChanged(int state, String incomingNumber) {
+        switch (state) {
+            //Hangup
+            case TelephonyManager.CALL_STATE_IDLE:
+                Log.d("My","idle");
+                break;
+            //Outgoing
+            case TelephonyManager.CALL_STATE_OFFHOOK:
+                Log.d("My","outgoing");
+                break;
+            //Incoming
+            case TelephonyManager.CALL_STATE_RINGING:
+                break;
+        }
+    }
+}
 
 public class HelloService extends Service {
     IntentFilter filter;
     MyBroadcastReceiver receiver;
     PhoneCallReceiver phonecallreceiver;
-    Realm realm;
+    final int FOREGROUND_NOTIFICATION_ID=1596;
 
-  /*  class Mythread implements Runnable{
-        String type;
-        IntentFilter filter;
-        BroadcastReceiver receiver;
-        Mythread(String s)
-        {
-            type=s;
-            receiver=new MyBroadcastReceiver();
-        }
-        @Override
-        public void run() {
-            switch(type){
-                case "power":
-                    filter=new IntentFilter(Intent.ACTION_POWER_CONNECTED);
-                    break;
-                case "bluetooth":
-                    filter=new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-                    break;
-
-            }
-            if(receiver!=null && filter!=null)
-            registerReceiver(receiver,filter);
-        }
-    }*/
 
     @Override
     public void onCreate() {
 
+        //may remove this
+        ((TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE)).listen(new MyPhoneStateListener(),
+                PhoneStateListener.LISTEN_CALL_STATE);
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+
+        Notification notification = new Notification.Builder(this)
+                .setContentTitle("Forget It Not")
+                .setContentText("Relax!! I will do as ordered")
+                .setSmallIcon(R.drawable.bell)
+                .setContentIntent(pendingIntent)
+                .build();
+
+        startForeground(FOREGROUND_NOTIFICATION_ID, notification);
         receiver=new MyBroadcastReceiver();
         phonecallreceiver=new PhoneCallReceiver();
         //time using timer
@@ -66,10 +82,15 @@ public class HelloService extends Service {
         //audio
         registerReceiver(receiver,new IntentFilter(AudioManager.ACTION_HEADSET_PLUG));
 
-        //blueooth
+
+
+        //bluetooth on/off
         registerReceiver(receiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
 
-        //battery plugged/unplugged
+        //battery charging completed/battery low
+        registerReceiver(receiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+
+        //power connected/disconnected
         registerReceiver(receiver,new IntentFilter(Intent.ACTION_POWER_CONNECTED));
         registerReceiver(receiver,new IntentFilter(Intent.ACTION_POWER_DISCONNECTED));
 
@@ -81,38 +102,6 @@ public class HelloService extends Service {
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-
-        /*String event=intent.getStringExtra("event");
-        if(event!=null)
-        {
-            //final RealmResults<Task> tasks= realm.where(Task.class).findAll();
-            //Log.d(TAG,tasks.size()+"");
-            NotificationCompat.Builder mBuilder =
-                    new NotificationCompat.Builder(this)
-                            .setSmallIcon(R.drawable.bell)
-                            .setContentTitle("Task completed")
-                            .setContentText("Click here to view");
-// Creates an explicit intent for an Activity in your app
-            Intent resultIntent = new Intent(this, MainActivity.class);
-
-            PendingIntent resultPendingIntent =
-                    PendingIntent.getActivity(
-                            this,
-                            0,
-                            resultIntent,
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                    );
-
-            mBuilder.setContentIntent(resultPendingIntent);
-            NotificationManager mNotificationManager =
-                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-// mId allows you to update the notification later on.
-            mNotificationManager.notify(123, mBuilder.build());
-
-        }*/
-
-
         return START_STICKY;
     }
 
@@ -125,10 +114,12 @@ public class HelloService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(receiver!=null)
+        try{
             unregisterReceiver(receiver);
-        if(phonecallreceiver!=null)
             unregisterReceiver(phonecallreceiver);
-        Toast.makeText(this, "Service stopped", Toast.LENGTH_SHORT).show();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }

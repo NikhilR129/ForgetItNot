@@ -16,9 +16,9 @@ import com.example.nikhilr129.forgetitnot.event.EventSelectionActivity;
  * Created by root on 12/4/17.
  */
 
-public  class ActiionName {
+public  class ActionName {
     private Context context;
-    public ActiionName(Context context) {
+    public ActionName(Context context) {
         this.context = context;
 
     }
