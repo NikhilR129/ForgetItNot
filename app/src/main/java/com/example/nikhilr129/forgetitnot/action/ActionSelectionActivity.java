@@ -18,7 +18,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,7 +25,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.nikhilr129.forgetitnot.Models.Event;
@@ -39,7 +37,6 @@ import com.example.nikhilr129.forgetitnot.main.MainActivity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 import io.realm.Realm;
 import io.realm.RealmList;
@@ -281,7 +278,7 @@ public class ActionSelectionActivity extends AppCompatActivity{
             case R.id.check:
                 if(atLeastOneActionSelect()) {
                     startActivity(new Intent(ActionSelectionActivity.this, MainActivity.class));
-                    finish();
+                    ActionSelectionActivity.this.finish();
                 }
                 else {
                     new AlertDialog.Builder(ActionSelectionActivity.this)
