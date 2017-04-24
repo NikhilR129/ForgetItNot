@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
 import android.provider.MediaStore;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -89,11 +90,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Realm.init(context);
-        realm=Realm.getDefaultInstance();
         Log.d(TAG,intent.getAction());
-        context.startService(new Intent(context,HelloService.class));
-
         if (isInitialStickyBroadcast()) {
             //ignore this broadcast
         } else {
@@ -179,6 +176,18 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
                     {
                         run_query(context,realm,"Wifi","1");
                         Log.d(TAG,"wifi disabled");
+                    }
+                    break;
+                case "android.intent.action.NEW_OUTGOING_CALL":
+                    String savedNumber = intent.getExtras().getString("android.intent.extra.PHONE_NUMBER");
+                    run_query(context,realm,"Outgoing Call",savedNumber);
+                    Log.d(TAG,"outgoing call"+savedNumber);
+                    break;
+                case "android.intent.action.PHONE_STATE":
+                    String stateStr = intent.getExtras().getString(TelephonyManager.EXTRA_STATE);
+                    String number = intent.getExtras().getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
+                    if (stateStr!=null && stateStr.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
+                        run_query(context,realm,"Incoming Call",number);
                     }
                     break;
             }
