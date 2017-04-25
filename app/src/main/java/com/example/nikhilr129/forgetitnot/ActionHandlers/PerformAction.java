@@ -122,7 +122,7 @@ public class PerformAction {
         audioManager.setSpeakerphoneOn(true);
         Log.v("entered","entered");
     }
-    public void performVolumeAction(int media, int ring, int alarm) {
+    public void performVolumeAction(int alarm, int media, int ring) {
         AudioManager audioManager = (AudioManager)context.getSystemService(context.AUDIO_SERVICE);
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int) (1.5*media), 0);
         audioManager.setStreamVolume(AudioManager.STREAM_ALARM, (int) (1.5*alarm), 0);
