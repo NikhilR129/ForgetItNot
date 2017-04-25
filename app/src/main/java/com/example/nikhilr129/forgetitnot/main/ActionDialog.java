@@ -1,11 +1,10 @@
 package com.example.nikhilr129.forgetitnot.main;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-
-import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
@@ -13,7 +12,6 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -84,10 +82,10 @@ public  class ActionDialog {
                 break;
             case "Volume":
                 t1 = new TextView(context);
-                t1.setText(" Media " + Integer.parseInt(a[0])*10 + "%\n");
+                t1.setText(" Alarm " + Integer.parseInt(a[0])*10 + "%\n");
                 layout.addView(t1);
                 t1 = new TextView(context);
-                t1.setText(" Alarm " + Integer.parseInt(a[1])*10  + "%\n");
+                t1.setText(" Media " + Integer.parseInt(a[1])*10  + "%\n");
                 layout.addView(t1);
                 t1 = new TextView(context);
                 t1.setText(" Ring " + Integer.parseInt(a[2])*10  + "%");
