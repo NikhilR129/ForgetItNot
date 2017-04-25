@@ -28,6 +28,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
@@ -91,7 +92,7 @@ public class HelloService extends Service implements GoogleApiClient.ConnectionC
         registerReceiver(receiver, new IntentFilter(Intent.ACTION_NEW_OUTGOING_CALL));
 
         //location to be coded below
-
+        registerReceiver(receiver,new IntentFilter("GeoLocation"));
         //audio
         registerReceiver(receiver, new IntentFilter(AudioManager.ACTION_HEADSET_PLUG));
 
@@ -120,13 +121,14 @@ public class HelloService extends Service implements GoogleApiClient.ConnectionC
         for (int i = 0; i < rl.size(); i++) {
             Task t = rl.get(i);
             Log.d(TAG,t.id+t.event.type+t.event.a0+t.event.a1);
-           // SimpleGeofence gf = new SimpleGeofence(t.id, Double.parseDouble(t.event.a0), Double.parseDouble(t.event.a1), 100, Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_ENTER);
-           // mGeofenceList.add(gf.toGeofence());
+            SimpleGeofence gf = new SimpleGeofence(t.id, Double.parseDouble(t.event.a0), Double.parseDouble(t.event.a1), 100, Geofence.NEVER_EXPIRE, Geofence.GEOFENCE_TRANSITION_ENTER);
+           mGeofenceList.add(gf.toGeofence());
         }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         return START_STICKY;
     }
 
@@ -139,6 +141,7 @@ public class HelloService extends Service implements GoogleApiClient.ConnectionC
     @Override
     public void onDestroy() {
         super.onDestroy();
+        LocationServices.GeofencingApi.removeGeofences(mApiClient,getGeofenceTransitionPendingIntent());
         try {
             unregisterReceiver(receiver);
         } catch (Exception e) {
@@ -169,8 +172,12 @@ public class HelloService extends Service implements GoogleApiClient.ConnectionC
         }
         if(mGeofenceList.size()>0)
         {
-            LocationServices.GeofencingApi.addGeofences(mApiClient, mGeofenceList,
-                    mGeofenceRequestIntent);
+            LocationServices.GeofencingApi.addGeofences(
+                    mApiClient,
+                    getGeofencingRequest(),
+                    getGeofenceTransitionPendingIntent()
+            );
+
             Toast.makeText(this, "Connected to api", Toast.LENGTH_SHORT).show();
         }
 
@@ -180,6 +187,7 @@ public class HelloService extends Service implements GoogleApiClient.ConnectionC
     public void onConnectionSuspended(int i) {
         if (null != mGeofenceRequestIntent) {
             LocationServices.GeofencingApi.removeGeofences(mApiClient, mGeofenceRequestIntent);
+            Log.d(TAG,"removed");
         }
     }
 
@@ -204,7 +212,7 @@ public class HelloService extends Service implements GoogleApiClient.ConnectionC
             }
             return true;
         } else {
-            Log.e(TAG, "Google Play services is unavailable.");
+            Log.d(TAG, "Google Play services is unavailable.");
             return false;
         }
     }
@@ -214,7 +222,13 @@ public class HelloService extends Service implements GoogleApiClient.ConnectionC
      * transition occurs.
      */
     private PendingIntent getGeofenceTransitionPendingIntent() {
-        Intent intent = new Intent(this, Service.class);
+        Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
         return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+    private GeofencingRequest getGeofencingRequest() {
+        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
+        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
+        builder.addGeofences(mGeofenceList);
+        return builder.build();
     }
 }

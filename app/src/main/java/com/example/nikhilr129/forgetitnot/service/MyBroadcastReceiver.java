@@ -190,6 +190,8 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
                         run_query(context,realm,"Incoming Call",number);
                     }
                     break;
+                case "GeoLocation":
+                    Log.d(TAG,intent.getStringExtra("id"));
             }
         }
 

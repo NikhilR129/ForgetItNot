@@ -26,6 +26,8 @@
 
         <service
             android:name=".service.HelloService"/>
+        <service
+            android:name=".service.GeofenceTransitionsIntentService"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD8Z6808bzFh-mKPuEUlCbE2YK7t4GYbYg" />
@@ -57,6 +59,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+                <action android:name="GeoLocation"/>
             </intent-filter>
 
         </receiver>
