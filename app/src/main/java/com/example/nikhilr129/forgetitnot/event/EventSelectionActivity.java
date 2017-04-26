@@ -371,7 +371,9 @@ public class EventSelectionActivity extends AppCompatActivity implements TimePic
                 //Toast.makeText(this, ""+eventList.get(i).getName(), Toast.LENGTH_LONG).show();
                 if(eventList.get(i).getName().equals("Time")){
                     //Toast.makeText(this, ""+adapter.data[0][1], Toast.LENGTH_LONG).show();
+                    a0=""+adapter.data[0][0];
                     a1=""+adapter.data[0][1];
+                    Toast.makeText(this, a1, Toast.LENGTH_SHORT).show();
                 }else if(eventList.get(i).getName().equals("Incoming Call")){
                     //Toast.makeText(this, ""+adapter.data[1][0], Toast.LENGTH_LONG).show()
                     a0=""+adapter.data[1][0];

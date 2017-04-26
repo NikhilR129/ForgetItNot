@@ -90,7 +90,9 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Log.d(TAG,intent.getAction());
+        String a=intent.getStringExtra("extra");
+        if(a!=null)
+            Log.d(TAG,a);
         if (isInitialStickyBroadcast()) {
             //ignore this broadcast
         } else {
