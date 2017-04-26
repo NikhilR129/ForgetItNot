@@ -10,6 +10,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -70,7 +71,7 @@ public class HelloService extends Service implements GoogleApiClient.ConnectionC
         mApiClient.connect();
 
         // Instantiate a new geofence storage area.
-
+        alarmManager = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
         mGeofenceList = new ArrayList<Geofence>();
         createGeofences();
         Intent notificationIntent = new Intent(this, MainActivity.class);
@@ -89,23 +90,22 @@ public class HelloService extends Service implements GoogleApiClient.ConnectionC
         //for time
         Realm.init(this);
         Realm realm=Realm.getDefaultInstance();
-        Task rl=realm.where(Task.class).equalTo("event.type","Time").findFirst();
-        if(rl!=null)
+        RealmResults<Task> rl=realm.where(Task.class).equalTo("event.type","Time").findAll();
+        for(int i=0;i<rl.size();i++)
         {
             calendar=Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(rl.event.a0));
-            calendar.set(Calendar.MINUTE, Integer.parseInt(rl.event.a1));
-
+            calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(rl.get(i).event.a0));
+            calendar.set(Calendar.MINUTE, Integer.parseInt(rl.get(i).event.a1));
+            calendar.set(Calendar.SECOND, 0);
             Intent myIntent=new Intent(this,MyBroadcastReceiver.class);
-            myIntent.putExtra("extra", "yes");
+            myIntent.putExtra("id",String.valueOf(rl.get(i).id));
             mAlarmIntent = PendingIntent.getBroadcast(this, 0, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), mAlarmIntent);
+            if(mAlarmIntent!=null && calendar!=null)
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), mAlarmIntent);
+
+            Log.d(TAG, "onCreate: "+ calendar.getTimeInMillis());
         }
-
-
-
-
 
         receiver = new MyBroadcastReceiver();
 

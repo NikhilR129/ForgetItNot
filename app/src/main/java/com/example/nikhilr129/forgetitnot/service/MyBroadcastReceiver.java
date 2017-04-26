@@ -37,6 +37,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
         PerformAction performer=new PerformAction(context);
         switch(type)
         {
+
             case "Profile":
                 performer.performProfileAction(a0);
                 break;
@@ -90,9 +91,17 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        String a=intent.getStringExtra("extra");
-        if(a!=null)
-            Log.d(TAG,a);
+        String id=intent.getStringExtra("id");
+        if(id!=null)
+        {
+            Log.d(TAG,id);
+            Realm.init(context);
+            Realm realm=Realm.getDefaultInstance();
+            Task task=realm.where(Task.class).findFirst();
+            RealmList<Action> actions=task.actions;
+            for(int i=0;i<actions.size();i++)
+                perform(context,actions.get(i).type,actions.get(i).a0,actions.get(i).a1,actions.get(i).a2,actions.get(i).a3);
+        }
         if (isInitialStickyBroadcast()) {
             //ignore this broadcast
         } else {
@@ -100,8 +109,9 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             Realm realm=Realm.getDefaultInstance();
             RealmResults<Task> rl;
             // Connectivity state has changed
-            String condition=intent.getAction();
 
+            String condition=intent.getAction();
+            if(condition!=null)
             switch(condition)
             {
                 case "android.intent.action.HEADSET_PLUG":   //fine

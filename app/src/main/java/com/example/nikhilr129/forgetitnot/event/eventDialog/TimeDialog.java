@@ -3,6 +3,7 @@ package com.example.nikhilr129.forgetitnot.event.eventDialog;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,9 +62,13 @@ public class TimeDialog  {
                             tmp[5]=1;
                         if(sun.isChecked())
                             tmp[6]=1;
-                        adapter.data[0][0] = picker.getHour();
+                        int hour = picker.getCurrentHour();
+                        int minute = picker.getCurrentMinute();
+                        adapter.data[0][0] = String.valueOf(hour);
+                        adapter.data[0][1] = String.valueOf(minute);
+                        Log.v("time", adapter.data[0][0] + " "+ adapter.data[0][1]);
                         for(int i=0;i<7;i++){
-                            adapter.data[0][3]+=Integer.toString(tmp[i]);
+                            adapter.data[0][2]+=Integer.toString(tmp[i]);
                         }
                         if(!(mon.isChecked() || tue.isChecked() || wed.isChecked() || thurs.isChecked() ||fri.isChecked() || sat.isChecked() || sun.isChecked())) {
                             Toast.makeText(context, "Please select atleast one day", Toast.LENGTH_SHORT).show();

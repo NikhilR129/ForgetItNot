@@ -64,6 +64,14 @@
             </intent-filter>
 
         </receiver>
+        <receiver android:name=".service.MyBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+                <action android:name="GeoLocation"/>
+            </intent-filter>
+
+        </receiver>
 
     </application>
 
