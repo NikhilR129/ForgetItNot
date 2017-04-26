@@ -5,10 +5,12 @@ package com.example.nikhilr129.forgetitnot.service;
  */
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -32,6 +34,7 @@ import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import io.realm.Realm;
@@ -43,12 +46,13 @@ public class HelloService extends Service implements GoogleApiClient.ConnectionC
     IntentFilter filter;
     private static String TAG = "MyBroadcast";
     MyBroadcastReceiver receiver;
-    PhoneCallReceiver phonecallreceiver;
+    Calendar calendar;
+    AlarmManager alarmManager;
     final int FOREGROUND_NOTIFICATION_ID = 15966896;
     List<Geofence> mGeofenceList;
     private LocationServices mLocationService;
     // Stores the PendingIntent used to request geofence monitoring.
-    private PendingIntent mGeofenceRequestIntent;
+    private PendingIntent mGeofenceRequestIntent,mAlarmIntent;
     private GoogleApiClient mApiClient;
 
     @Override
@@ -67,7 +71,7 @@ public class HelloService extends Service implements GoogleApiClient.ConnectionC
         mApiClient.connect();
 
         // Instantiate a new geofence storage area.
-
+        alarmManager = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
         mGeofenceList = new ArrayList<Geofence>();
         createGeofences();
         Intent notificationIntent = new Intent(this, MainActivity.class);
@@ -81,8 +85,29 @@ public class HelloService extends Service implements GoogleApiClient.ConnectionC
                 .build();
 
         startForeground(FOREGROUND_NOTIFICATION_ID, notification);
+
+
+        //for time
+        Realm.init(this);
+        Realm realm=Realm.getDefaultInstance();
+        RealmResults<Task> rl=realm.where(Task.class).equalTo("event.type","Time").findAll();
+        for(int i=0;i<rl.size();i++)
+        {
+            calendar=Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(rl.get(i).event.a0));
+            calendar.set(Calendar.MINUTE, Integer.parseInt(rl.get(i).event.a1));
+            calendar.set(Calendar.SECOND, 0);
+            Intent myIntent=new Intent(this,MyBroadcastReceiver.class);
+            myIntent.putExtra("id",String.valueOf(rl.get(i).id));
+            mAlarmIntent = PendingIntent.getBroadcast(this, 0, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            if(mAlarmIntent!=null && calendar!=null)
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), mAlarmIntent);
+
+            Log.d(TAG, "onCreate: "+ calendar.getTimeInMillis());
+        }
+
         receiver = new MyBroadcastReceiver();
-        //time using timer
 
         //incoming call
         filter = new IntentFilter();
@@ -141,7 +166,21 @@ public class HelloService extends Service implements GoogleApiClient.ConnectionC
     @Override
     public void onDestroy() {
         super.onDestroy();
-        LocationServices.GeofencingApi.removeGeofences(mApiClient,getGeofenceTransitionPendingIntent());
+        try{
+            alarmManager.cancel(mAlarmIntent);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        try
+        {
+            LocationServices.GeofencingApi.removeGeofences(mApiClient,getGeofenceTransitionPendingIntent());
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
         try {
             unregisterReceiver(receiver);
         } catch (Exception e) {

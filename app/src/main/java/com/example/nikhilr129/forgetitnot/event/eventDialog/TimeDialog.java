@@ -3,6 +3,7 @@ package com.example.nikhilr129.forgetitnot.event.eventDialog;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +15,6 @@ import com.example.nikhilr129.forgetitnot.R;
 import com.example.nikhilr129.forgetitnot.event.Event;
 import com.example.nikhilr129.forgetitnot.event.EventAdapter;
 
-import static android.R.attr.data;
-
 /**
  * Created by kanchicoder on 4/16/2017.
  */
@@ -26,6 +25,7 @@ public class TimeDialog  {
     private  Context context;
     private  Event event;
     private  EventAdapter adapter;
+    private  TimePicker picker;
     public TimeDialog(Context context, Event event, EventAdapter adapter) {
         this.context = context;
         this.event = event;
@@ -40,6 +40,7 @@ public class TimeDialog  {
                 tue=(CheckBox)viewRoot.findViewById(R.id.tue),wed=(CheckBox)viewRoot.findViewById(R.id.wed),
                 thurs=(CheckBox)viewRoot.findViewById(R.id.thurs),fri=(CheckBox)viewRoot.findViewById(R.id.fri),
                 sat=(CheckBox)viewRoot.findViewById(R.id.sat),sun=(CheckBox)viewRoot.findViewById(R.id.sun);
+                picker = (TimePicker) viewRoot.findViewById(R.id.timePicker);
         builder.setView(viewRoot).
                 setTitle("Select")
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -61,9 +62,13 @@ public class TimeDialog  {
                             tmp[5]=1;
                         if(sun.isChecked())
                             tmp[6]=1;
-                        adapter.data[0][1]="";
+                        int hour = picker.getCurrentHour();
+                        int minute = picker.getCurrentMinute();
+                        adapter.data[0][0] = String.valueOf(hour);
+                        adapter.data[0][1] = String.valueOf(minute);
+                        Log.v("time", adapter.data[0][0] + " "+ adapter.data[0][1]);
                         for(int i=0;i<7;i++){
-                            adapter.data[0][1]+=Integer.toString(tmp[i]);
+                            adapter.data[0][2]+=Integer.toString(tmp[i]);
                         }
                         if(!(mon.isChecked() || tue.isChecked() || wed.isChecked() || thurs.isChecked() ||fri.isChecked() || sat.isChecked() || sun.isChecked())) {
                             Toast.makeText(context, "Please select atleast one day", Toast.LENGTH_SHORT).show();
